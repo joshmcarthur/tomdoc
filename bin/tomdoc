@@ -9,5 +9,5 @@ elsif ARGV.delete('-s')
   require 'pp'
   pp RubyParser.new.parse(ARGF.read)
 else
-  TomDoc.generate(ARGF.read)
+  TomDoc::Generators::Console.generate(ARGF.read)
 end
