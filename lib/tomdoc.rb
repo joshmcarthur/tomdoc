@@ -1,5 +1,5 @@
-require 'pp'
 require 'open3'
+require 'pp'
 
 require 'ruby_parser'
 require 'colored'
