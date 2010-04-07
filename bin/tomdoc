@@ -8,6 +8,8 @@ if ARGV.delete('-p')
 elsif ARGV.delete('-s')
   require 'pp'
   pp RubyParser.new.parse(ARGF.read)
+elsif ARGV.delete('-w')
+  TomDoc::Generators::HTML.generate(ARGF.read)
 else
   TomDoc::Generators::Console.generate(ARGF.read)
 end

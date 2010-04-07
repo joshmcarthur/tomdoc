@@ -37,13 +37,13 @@ module TomDoc
     end
 
     def write_class_methods(scope, prefix = nil)
-      scope.class_methods.each do |method|
+      scope.class_methods.map do |method|
         write_method(method, "#{prefix}#{scope.name}.")
       end
     end
 
     def write_instance_methods(scope, prefix = nil)
-      scope.instance_methods.each do |method|
+      scope.instance_methods.map do |method|
         write_method(method, "#{prefix}#{scope.name}#")
       end
     end

@@ -6,6 +6,7 @@ require 'colored'
 module TomDoc
   autoload :Open3,     'open3'
 
+  autoload :TomDoc,    'tomdoc/tomdoc'
   autoload :Method,    'tomdoc/method'
   autoload :Scope,     'tomdoc/scope'
   autoload :Parser,    'tomdoc/parser'

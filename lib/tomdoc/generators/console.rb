@@ -1,10 +1,6 @@
 module TomDoc
   module Generators
     class Console < Generator
-      def write(string)
-        puts string
-      end
-
       def highlight(text)
         pygments(text, '-l', 'ruby')
       end
@@ -24,6 +20,8 @@ module TomDoc
       end
 
       def format_comment(comment)
+        comment = comment.to_s
+
         # Strip leading comments
         comment.gsub!(/^# ?/, '')
 
