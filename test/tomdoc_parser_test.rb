@@ -19,6 +19,8 @@ class TomDocParserTest < TomDoc::Test
     #   # => nil
     #
     # Returns the duplicated String when the count is > 1.
+    # Returns the atomic mass of the element as a Float. The value is in
+    #   unified atomic mass units.
     # Returns nil when the count is < 1.
     def multiplex(text, count)
       text * count
@@ -38,6 +40,7 @@ comment2
     # Duplicate some text an abitrary number of times.
     #
     # Examples
+    #
     #   multiplex('Tom', 4)
     #   # => 'TomTomTomTom'
     #
@@ -79,6 +82,7 @@ comment3
 
   test "knows how many examples there are" do
     assert_equal 3, @comment.examples.size
+    assert_equal 2, @comment3.examples.size
   end
 
   test "knows each example" do
@@ -91,15 +95,20 @@ comment3
   end
 
   test "knows how many return examples there are" do
-    assert_equal 2, @comment.returns.size
+    assert_equal 3, @comment.returns.size
   end
 
   test "knows each return example" do
     assert_equal "Returns the duplicated String when the count is > 1.",
       @comment.returns.first.to_s
 
+    string = ''
+    string << "Returns the atomic mass of the element as a Float."
+    string << "The value is in unified atomic mass units."
+    assert_equal string, @comment.returns[1].to_s
+
     assert_equal "Returns nil when the count is < 1.",
-      @comment.returns.last.to_s
+      @comment.returns[2].to_s
   end
 
   test "knows what to do when there are no return examples" do

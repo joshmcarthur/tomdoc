@@ -18,6 +18,8 @@ module TomDoc
       #
       # Returns the duplicated String when the count is > 1.
       # Returns nil when the count is < 1.
+      # Returns the atomic mass of the element as a Float. The value is in
+      #   unified atomic mass units.
       def multiplex(text, count)
         text * count
       end
