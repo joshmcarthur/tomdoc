@@ -22,18 +22,12 @@ class TomDocParserTest < TomDoc::Test
     # Returns the atomic mass of the element as a Float. The value is in
     #   unified atomic mass units.
     # Returns nil when the count is < 1.
-    def multiplex(text, count)
-      text * count
-    end
 comment
 
     @comment2 = TomDoc::TomDoc.new(<<comment2)
     # Duplicate some text an abitrary number of times.
     #
     # Returns the duplicated String.
-    def multiplex(text, count)
-      text * count
-    end
 comment2
 
     @comment3 = TomDoc::TomDoc.new(<<comment3)
@@ -46,9 +40,6 @@ comment2
     #
     #   multiplex('Bo', 2)
     #   # => 'BoBo'
-    def multiplex(text, count)
-      text * count
-    end
 comment3
   end
 
