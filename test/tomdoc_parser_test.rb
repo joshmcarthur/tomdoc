@@ -82,7 +82,7 @@ comment3
   end
 
   test "knows each example" do
-    assert_equal "  multiplex('Bo', 2)\n  # => 'BoBo'",
+    assert_equal "multiplex('Bo', 2)\n# => 'BoBo'",
       @comment.examples[1].to_s
   end
 
@@ -95,7 +95,7 @@ comment3
   end
 
   test "knows each return example" do
-    assert_equal "Returns the duplicated String.",
+    assert_equal "Returns the duplicated String when the count is > 1.",
       @comment.returns.first.to_s
 
     assert_equal "Returns nil when the count is < 1.",

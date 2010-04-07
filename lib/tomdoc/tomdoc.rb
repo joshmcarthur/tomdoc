@@ -11,7 +11,9 @@ module TomDoc
     end
 
     def tomdoc
-      raw.gsub(/^\s*# ?/, '')
+      raw.split("\n").map do |line|
+        line =~ /^(\s*#\s*)/ ? line.sub($1, '') : nil
+      end.compact.join("\n")
     end
 
     def description
@@ -33,7 +35,12 @@ module TomDoc
       end
     end
 
-    def require
+    def returns
+      if tomdoc =~ /^\s*(Returns.+)/m
+        $1.split("\n")
+      else
+        []
+      end
     end
   end
 end
