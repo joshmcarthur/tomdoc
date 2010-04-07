@@ -1,5 +1,7 @@
 require 'test/unit'
 
+require 'test/fixtures/multiplex'
+
 require 'tomdoc'
 
 module TomDoc
