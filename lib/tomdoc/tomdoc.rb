@@ -24,9 +24,16 @@ module TomDoc
       tomdoc
     end
 
+    def valid?
+      tomdoc
+      true
+    rescue InvalidTomDoc
+      false
+    end
+
     def tomdoc
       if !raw.include?('Returns')
-        raise InvalidTomDoc.new(raw)
+        raise InvalidTomDoc.new("No `Returns' statement.")
       end
 
       raw.split("\n").map do |line|

@@ -61,7 +61,9 @@ module TomDoc
 
       sexp.each do |method|
         next unless method.is_a?(Array) && type == method[0]
-        next unless tomdoc_method?(method)
+
+        tomdoc = TomDoc.new(method.comments)
+        next unless tomdoc.valid?
 
         # Hack for static methods - second arg is their scope
         method.delete_at(1) if type == :defs
@@ -78,10 +80,6 @@ module TomDoc
       end
 
       methods
-    end
-
-    def tomdoc_method?(method)
-      !method.comments.empty?
     end
   end
 end
