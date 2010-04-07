@@ -52,6 +52,12 @@ comment2
 comment3
   end
 
+  test "knows when TomDoc is invalid" do
+    assert_raises TomDoc::InvalidTomDoc do
+      @comment3.examples
+    end
+  end
+
   test "parses a description" do
     assert_equal "Duplicate some text an abitrary number of times.",
       @comment.description
@@ -82,11 +88,10 @@ comment3
 
   test "knows how many examples there are" do
     assert_equal 3, @comment.examples.size
-    assert_equal 2, @comment3.examples.size
   end
 
   test "knows each example" do
-    assert_equal "multiplex('Bo', 2)\n# => 'BoBo'",
+    assert_equal "  multiplex('Bo', 2)\n  # => 'BoBo'",
       @comment.examples[1].to_s
   end
 
@@ -103,7 +108,7 @@ comment3
       @comment.returns.first.to_s
 
     string = ''
-    string << "Returns the atomic mass of the element as a Float."
+    string << "Returns the atomic mass of the element as a Float. "
     string << "The value is in unified atomic mass units."
     assert_equal string, @comment.returns[1].to_s
 

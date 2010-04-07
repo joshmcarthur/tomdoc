@@ -1,4 +1,18 @@
 module TomDoc
+  class InvalidTomDoc < RuntimeError
+    def initialize(doc)
+      @doc = doc
+    end
+
+    def message
+      @doc
+    end
+
+    def to_s
+      @doc
+    end
+  end
+
   class TomDoc
     attr_accessor :raw
 
@@ -11,8 +25,12 @@ module TomDoc
     end
 
     def tomdoc
+      if !raw.include?('Returns')
+        raise InvalidTomDoc.new(raw)
+      end
+
       raw.split("\n").map do |line|
-        line =~ /^(\s*#\s*)/ ? line.sub($1, '') : nil
+        line =~ /^(\s*# ?)/ ? line.sub($1, '') : nil
       end.compact.join("\n")
     end
 
@@ -37,7 +55,18 @@ module TomDoc
 
     def returns
       if tomdoc =~ /^\s*(Returns.+)/m
-        $1.split("\n")
+        lines = $1.split("\n")
+        statements = []
+
+        lines.each do |line|
+          if line =~ /^\s+/
+            statements.last << line.squeeze(' ')
+          else
+            statements << line
+          end
+        end
+
+        statements
       else
         []
       end
