@@ -8,6 +8,7 @@ module TomDoc
 
   autoload :TomDoc,    'tomdoc/tomdoc'
   autoload :Method,    'tomdoc/method'
+  autoload :Arg,       'tomdoc/arg'
   autoload :Scope,     'tomdoc/scope'
   autoload :Parser,    'tomdoc/parser'
   autoload :Generator, 'tomdoc/generator'
