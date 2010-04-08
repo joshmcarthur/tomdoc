@@ -78,6 +78,12 @@ example
         end
       end
 
+      on "-i", "--ignore",
+        "Ignore validation, print all methods we find with comments.." do
+
+        @options[:validate] = false
+      end
+
       separator " "
       separator "Common Options:"
 
