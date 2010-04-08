@@ -11,8 +11,20 @@ module TomDoc
     end
     alias_method :to_s, :name
 
+    def [](scope)
+      @scopes[scope]
+    end
+
+    def keys
+      @scopes.keys
+    end
+
     def inspect
-      "<#{name} :#{@class_methods.inspect}: ##{@instance_methods.inspect}#>"
+      scopes = @scopes.keys.join(', ')
+      imethods = @instance_methods.inspect
+      cmethods = @class_methods.inspect
+
+      "<#{name} scopes:[#{scopes}] :#{cmethods}: ##{imethods}#>"
     end
   end
 end

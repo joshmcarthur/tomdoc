@@ -1,54 +1,5 @@
 module TomDoc
   class SourceParser
-    # DSL for defining sexp_path queries quickly.
-    #
-    # name - The Symbol name of the query. Queries can be accessed
-    #        using the "name_query" instance method, where name is this
-    #        argument.
-    # query - The sexp_path query.
-    #
-    # Examples
-    #   query :args, Q?{ t(:args) }
-    #
-    # Returns nothing.
-    def self.query(name, query)
-      define_method("#{name}_query", proc { query })
-    end
-
-    #
-    # Sexp Queries
-    #
-
-    # See http://github.com/adamsanderson/sexp_path#readme for
-    # help in authoring them.
-    #
-    # Any query, once defined, can be used in the parser by calling
-    # "name_query", where name is the first argument to the `query`
-    # method.
-    #
-    # For example this query:
-    #   query :args, Q?{ t(:args) }
-    #
-    # Can be used by calling `args_query`, like so:
-    #   sexp / args_query
-
-    query :scope, Q?{
-      any(
-        s(:class, atom % 'name', _, _),
-        s(:module, atom % 'name', _)
-      )
-    }
-
-    query :args, Q?{ t(:args) }
-
-    query :imethod, Q?{
-      s(:defn, atom % 'name', _, _)
-    }
-
-    query :cmethod, Q?{
-      s(:defs, _, atom % 'name', _, _)
-    }
-
     # Converts Ruby code into a data structure.
     #
     # text - A String of Ruby code.
@@ -97,57 +48,76 @@ module TomDoc
     #   Hash or a TomDoc::Scope.
     def parse(text)
       sexp = @parser.parse(text)
-
-      (sexp / scope_query).each do |result|
-        sexp   = result.sexp[1..-1]
-        scopes = sexp / scope_query
-        name   = result['name']
-
-        if scopes.any?
-          @scopes[name] ||= {}
-
-          scopes.each do |scope|
-            @scopes[name][scope['name']] = build_scope(scope)
-          end
-        else
-          @scopes[name] = build_scope(result)
-        end
-      end
-
+      process(tokenize(sexp))
       @scopes
     end
 
-    def build_scope(scope)
-      sexp = scope.sexp
-      scope = Scope.new(scope['name'])
-      scope.instance_methods = build_methods(sexp / imethod_query)
-      scope.class_methods    = build_methods(sexp / cmethod_query)
+    def process(ast, scope = nil)
+      case ast[0]
+      when :module, :class
+        name = ast[1]
+        new_scope = Scope.new(name)
 
-      scope
-    end
+        if scope
+          scope.scopes[name] = new_scope
+        else
+          @scopes[name] = new_scope
+        end
 
-    # Helps build Method objects from method definition sexps. Ignores
-    # any methods that aren't valid TomDoc - like this one ;)
-    def build_methods(methods)
-      built = []
-
-      methods.each do |method|
-        sexp    = method.sexp
-        comment = sexp.comments
-        next unless TomDoc.valid?(comment)
-
-        built << Method.new(method['name'], comment, build_args(sexp))
+        process(ast[2], new_scope)
+      when :imethod
+        ast.shift
+        scope.instance_methods << Method.new(*ast) if TomDoc.valid?(ast[2])
+      when :cmethod
+        ast.shift
+        scope.class_methods << Method.new(*ast) if TomDoc.valid?(ast[2])
+      when Array
+        ast.map { |a| process(a, scope) }
       end
-
-      built
     end
 
-    # Given a method definition sexp, returns an array of argument
-    # names.
-    def build_args(sexp)
-      args = sexp / args_query
-      return [] unless args.any?
-      args.first.sexp[1..-1].select { |arg| arg.is_a? Symbol }
+    # Converts a Ruby AST-style Sexp into an Array of more useful tokens.
+    #
+    # node - A Ruby AST Sexp or Array
+    #
+    # Examples
+    #
+    #   [:module, :Math,
+    #     [:class, :Multiplexer,
+    #       [:cmethod,
+    #         :multiplex, [:text], "# Class Method Comment"],
+    #       [:imethod,
+    #         :multiplex, [:text, :count], "# Instance Method Comment"]]]
+    #
+    # Returns an Array in the above format.
+    def tokenize(node)
+      case Array(node)[0]
+      when :module
+        name = node[1]
+        [ :module, name, tokenize(node[2]) ]
+      when :class
+        name = node[1]
+        [ :class, name, tokenize(node[3]) ]
+      when :defn
+        name = node[1]
+        args = args_for_node(node[2])
+        [ :imethod, name, args, node.comments ]
+      when :defs
+        name = node[2]
+        args = args_for_node(node[3])
+        [ :cmethod, name, args, node.comments ]
+      when :block
+        tokenize(node[1..-1])
+      when :scope
+        tokenize(node[1])
+      when Array
+        node.map { |n| tokenize(n) }.compact
+      end
+    end
+
+    # Given a method sexp, returns an array of the args.
+    def args_for_node(node)
+      Array(node)[1..-1].select { |arg| arg.is_a? Symbol }
     end
   end
 end
