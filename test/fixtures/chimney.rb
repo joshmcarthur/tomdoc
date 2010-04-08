@@ -4,6 +4,18 @@ module Butter
 end
 
 module GitHub
+  # Sings you a poem.
+  #
+  # name - Your name as a String.
+  #
+  # Returns a String poem.
+  def self.poem(name)
+    "Roses are red, " +
+      "violets are blue, " +
+        "#{name}'s a sucker, " +
+          "and now you are, too."
+  end
+
   class Chimney
     SMOKE_HOSTS_FILE = '/tmp/smoke_hosts'
     REPO_DIR = ENV['REPO_ROOT'] || '/data/repositories'

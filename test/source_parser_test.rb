@@ -38,6 +38,10 @@ class ChimneySourceParserTest < TomDoc::Test
     assert_equal 2, @result[:GitHub].keys.size
   end
 
+  test "finds methods in a namespace" do
+    assert_equal 1, @result[:GitHub].class_methods.size
+  end
+
   test "finds multiple classes in one file" do
     assert_equal 1, @result[:GitHub][:Math].instance_methods.size
   end
