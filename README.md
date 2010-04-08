@@ -1,10 +1,42 @@
 TomDoc
 ======
 
-See [the manual][man] or [the spec][spec] for the overview.
+TomDoc is a flexible code documentation specification with human readers in
+mind. Using a few simple rules and zero special syntax you can produce
+great looking documentation for both humans and machines.
 
-The remainder of this README will cover the Ruby library for parsing
-TomDoc and generating documentation from it.
+Just follow these four easy steps:
+
+1. Describe your method
+2. Optionally list and describe its arguments
+3. Optionally list some examples
+4. Explain what your method returns
+
+Like this:
+
+    # Duplicate some text an abitrary number of times.
+    #
+    # text  - The String to be duplicated.
+    # count - The Integer number of times to duplicate the text.
+    #
+    # Examples
+    #   multiplex('Tom', 4)
+    #   # => 'TomTomTomTom'
+    #
+    # Returns the duplicated String.
+    def multiplex(text, count)
+      text * count
+    end
+
+See [the manual][man] or [the spec][spec] for a more in-depth
+analysis.
+
+
+tomdoc.rb
+---------
+
+This repository also contains tomdoc.rb, a Ruby library for parsing
+TomDoc and generating pretty documentation from it.
 
 
 Installation
