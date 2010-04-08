@@ -48,7 +48,7 @@ comment3
 
   test "knows when TomDoc is invalid" do
     assert_raises TomDoc::InvalidTomDoc do
-      @comment3.examples
+      @comment3.validate
     end
   end
 

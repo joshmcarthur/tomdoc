@@ -9,7 +9,7 @@ class ChimneySourceParserTest < TomDoc::Test
   end
 
   test "finds instance methods" do
-    assert_equal 27, @chimney.instance_methods.size
+    assert_equal 35, @chimney.instance_methods.size
   end
 
   test "attaches TomDoc" do
@@ -71,6 +71,6 @@ class SourceParserTest < TomDoc::Test
     result = @parser.parse(fixture(:multiplex))
     klass = result[:TomDoc][:Fixtures][:Multiplex]
     assert klass
-    assert_equal 2, klass.instance_methods.size
+    assert_equal 3, klass.instance_methods.size
   end
 end

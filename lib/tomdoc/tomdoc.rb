@@ -17,7 +17,7 @@ module TomDoc
     attr_accessor :raw
 
     def initialize(text)
-      @raw = text.to_s
+      @raw = text.to_s.strip
     end
 
     def to_s
