@@ -1,5 +1,5 @@
 module GitHub
-  module Chimney
+  class Chimney
     SMOKE_HOSTS_FILE = '/tmp/smoke_hosts'
     REPO_DIR = ENV['REPO_ROOT'] || '/data/repositories'
     UNIX_USER = 'git'
