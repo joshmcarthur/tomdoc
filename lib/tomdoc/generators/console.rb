@@ -7,12 +7,7 @@ module TomDoc
 
       def write_scope_header(scope, prefix = '')
         return if scope.tomdoc.to_s.empty?
-
-        prefix = "#{prefix}#{scope.name}"
-        bars   = 80 - (prefix.size + 4)
-
-        write ('-' * bars) + ' <= ' + prefix
-        write format_comment(scope.tomdoc)
+        write_method(scope, prefix)
       end
 
       def write_method(method, prefix = '')
@@ -22,6 +17,7 @@ module TomDoc
       end
 
       def args(method)
+        return '' if !method.respond_to?(:args)
         if method.args.any?
           '(' + method.args.join(', ') + ')'
         else
