@@ -4,14 +4,13 @@ require 'ruby_parser'
 require 'colored'
 
 module TomDoc
-  autoload :Open3,     'open3'
-
-  autoload :TomDoc,    'tomdoc/tomdoc'
-  autoload :Method,    'tomdoc/method'
-  autoload :Arg,       'tomdoc/arg'
-  autoload :Scope,     'tomdoc/scope'
-  autoload :Parser,    'tomdoc/parser'
-  autoload :Generator, 'tomdoc/generator'
+  autoload :Open3,        'open3'
+  autoload :TomDoc,       'tomdoc/tomdoc'
+  autoload :Method,       'tomdoc/method'
+  autoload :Arg,          'tomdoc/arg'
+  autoload :Scope,        'tomdoc/scope'
+  autoload :SourceParser, 'tomdoc/source_parser'
+  autoload :Generator,    'tomdoc/generator'
 
   module Generators
     autoload :Console, 'tomdoc/generators/console'

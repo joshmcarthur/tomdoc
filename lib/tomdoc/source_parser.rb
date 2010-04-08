@@ -1,9 +1,10 @@
 module TomDoc
-  class Parser
+  class SourceParser
     def self.parse(text)
       new.parse(text)
     end
 
+    attr_accessor :parser, :scopes
     def initialize
       @parser = RubyParser.new
       @scopes = {}
