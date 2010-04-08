@@ -6,9 +6,9 @@ module TomDoc
       end
 
       def write_method(method, prefix = '')
-        puts '-' * 80
-        puts "#{prefix}#{method.name}#{args(method)}".bold, ''
-        puts format_comment(method.tomdoc)
+        write '-' * 80
+        write "#{prefix}#{method.name}#{args(method)}".bold, ''
+        write format_comment(method.tomdoc)
       end
 
       def args(method)

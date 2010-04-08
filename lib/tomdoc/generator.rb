@@ -1,7 +1,7 @@
 module TomDoc
   class Generator
     def self.generate(text)
-      process SourceParser.parse(text)
+      process(SourceParser.parse(text))
     end
 
     def self.process(sexp)
@@ -11,6 +11,7 @@ module TomDoc
     attr_reader :scopes
     def initialize(scopes)
       @scopes = scopes
+      @buffer = ''
     end
 
     def process(scopes = @scopes, prefix = nil)
@@ -18,6 +19,8 @@ module TomDoc
         write_scope(scope, prefix)
         process(scope, "#{name}::")
       end
+
+      @buffer
     end
 
     def write_scope(scope, prefix)
@@ -46,6 +49,14 @@ module TomDoc
     end
 
     def write_method(method, prefix = '')
+    end
+
+    def write(*things)
+      things.each do |thing|
+        @buffer << "#{thing}\n"
+      end
+
+      nil
     end
 
     def pygments(text, *args)
