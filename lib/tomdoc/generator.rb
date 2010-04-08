@@ -15,11 +15,8 @@ module TomDoc
 
     def process(scopes = @scopes, prefix = nil)
       scopes.each do |name, scope|
-        if scope.scopes.empty?
-          write_scope(scope, prefix)
-        else
-          process(scope, "#{name}::")
-        end
+        write_scope(scope, prefix)
+        process(scope, "#{name}::")
       end
     end
 

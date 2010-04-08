@@ -2,6 +2,8 @@ module TomDoc
   # A Scope is a Module or Class.
   # It may contain other scopes.
   class Scope
+    include Enumerable
+
     attr_accessor :name, :scopes, :instance_methods, :class_methods
     def initialize(name, instance_methods = [], class_methods = [])
       @name = name
@@ -17,6 +19,10 @@ module TomDoc
 
     def keys
       @scopes.keys
+    end
+
+    def each(&block)
+      @scopes.each(&block)
     end
 
     def to_s
