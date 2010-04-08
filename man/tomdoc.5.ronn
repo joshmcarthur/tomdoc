@@ -104,6 +104,47 @@ the above line by two spaces. For example:
     # Returns the atomic mass of the element as a Float. The value is in
     #   unified atomic mass units.
 
+## MORE EXAMPLES
+
+The following are all examples of valid TomDoc.
+
+Big Example:
+
+    # Converts a Ruby AST-style Sexp into an Array of more useful tokens.
+    #
+    # node - A Ruby AST Sexp or Array
+    #
+    # Examples
+    #
+    #   [:module, :Math, "",
+    #     [:class, :Multiplexer, "# Class Comment",
+    #       [:cmethod,
+    #         :multiplex, "# Class Method Comment", [:text]],
+    #       [:imethod,
+    #         :multiplex, "# Instance Method Comment", [:text, :count]]]]
+    #
+    #   # In others words:
+    #   # [ :type, :name, :comment, other ]
+    #
+    # Returns an Array in the above format.
+
+Wild params:
+
+    # Creates a Generator.
+    #
+    # options - Optional Symbol-keyed Hash:
+    #             :validate - Whether or not to validate TomDoc.
+    #
+    # scopes - Optional Symbol-keyed Hash.
+    #
+    # Returns an instance of TomDoc::Generator
+
+Short and sweet:
+
+    # Resets the state of the parser to a pristine one.
+    #
+    # Returns nothing.
+
 ## SEE ALSO
 
 ronn(1), rdoc(1), markdown(5)
