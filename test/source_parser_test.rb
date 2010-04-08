@@ -34,6 +34,8 @@ class ChimneySourceParserTest < TomDoc::Test
 
   test "finds namespaces" do
     assert @result[:GitHub][:Math]
+    assert_equal 1, @result.keys.size
+    assert_equal 2, @result[:GitHub].keys.size
   end
 
   test "finds multiple classes in one file" do
@@ -62,11 +64,10 @@ class SourceParserTest < TomDoc::Test
   test "finds class in a class"
 
   test "finds class in a module in a module" do
-    result = @parser.parse(fixture(:multiplex))
 
-    pp result
-    klass = result[:TomDoc][:Fixtures][:Multiple]
+    result = @parser.parse(fixture(:multiplex))
+    klass = result[:TomDoc][:Fixtures][:Multiplex]
     assert klass
-    asser_equal 2, klass.instance_methods.size
+    assert_equal 2, klass.instance_methods.size
   end
 end
