@@ -175,6 +175,50 @@ the above line by two spaces. For example:</p>
 #   unified atomic mass units.
 </code></pre>
 
+<h2>MORE EXAMPLES</h2>
+
+<p>The following are all examples of valid TomDoc.</p>
+
+<p>Big Example:</p>
+
+<pre><code># Converts a Ruby AST-style Sexp into an Array of more useful tokens.
+#
+# node - A Ruby AST Sexp or Array
+#
+# Examples
+#
+#   [:module, :Math, "",
+#     [:class, :Multiplexer, "# Class Comment",
+#       [:cmethod,
+#         :multiplex, "# Class Method Comment", [:text]],
+#       [:imethod,
+#         :multiplex, "# Instance Method Comment", [:text, :count]]]]
+#
+#   # In others words:
+#   # [ :type, :name, :comment, other ]
+#
+# Returns an Array in the above format.
+</code></pre>
+
+<p>Wild params:</p>
+
+<pre><code># Creates a Generator.
+#
+# options - Optional Symbol-keyed Hash:
+#             :validate - Whether or not to validate TomDoc.
+#
+# scopes - Optional Symbol-keyed Hash.
+#
+# Returns an instance of TomDoc::Generator
+</code></pre>
+
+<p>Short and sweet:</p>
+
+<pre><code># Resets the state of the parser to a pristine one.
+#
+# Returns nothing.
+</code></pre>
+
 <h2>SEE ALSO</h2>
 
 <p>ronn(1), rdoc(1), markdown(5)</p>
