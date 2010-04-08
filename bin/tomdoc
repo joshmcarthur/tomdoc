@@ -4,7 +4,7 @@ require 'tomdoc'
 
 if ARGV.delete('-p')
   require 'pp'
-  pp TomDoc::Parser.parse(ARGF.read)
+  pp TomDoc::SourceParser.parse(ARGF.read)
 elsif ARGV.delete('-s')
   require 'pp'
   pp RubyParser.new.parse(ARGF.read)

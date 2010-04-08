@@ -56,6 +56,9 @@ module TomDoc
     # Scopes and Methods, adding them to the @scopes instance variable
     # as it works.
     #
+    # ast   - Tokenized Array produced by calling `tokenize`.
+    # scope - An optional Scope object for nested classes or modules.
+    #
     # Returns nothing.
     def process(ast, scope = nil)
       case Array(ast)[0]

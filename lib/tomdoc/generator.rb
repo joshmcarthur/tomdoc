@@ -1,7 +1,7 @@
 module TomDoc
   class Generator
     def self.generate(text)
-      process Parser.parse(text)
+      process SourceParser.parse(text)
     end
 
     def self.process(sexp)
@@ -15,7 +15,7 @@ module TomDoc
 
     def process(scopes = @scopes, prefix = nil)
       scopes.each do |name, scope|
-        if scope.is_a? Scope
+        if scope.scopes.empty?
           write_scope(scope, prefix)
         else
           process(scope, "#{name}::")

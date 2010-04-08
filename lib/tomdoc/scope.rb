@@ -19,6 +19,10 @@ module TomDoc
       @scopes.keys
     end
 
+    def to_s
+      inspect
+    end
+
     def inspect
       scopes = @scopes.keys.join(', ')
       imethods = @instance_methods.inspect
