@@ -43,9 +43,6 @@ Usage
     $ tomdoc -i file.rb
     # Ignore TomDoc validation, print any methods we find.
 
-    $ tomdoc -l file.rb
-    # Lint (validate) the TomDoc in a file.
-
     $ tomdoc -h
     # Displays more options.
 
@@ -60,12 +57,16 @@ For now:
     $ tomdoc lib/tomdoc/source_parser.rb
 
 
-Screenshots
------------
+Formats
+-------
+
+### Console
 
     tomdoc lib/tomdoc/source_parser.rb -n token
 
 ![pattern](http://img.skitch.com/20100408-mnyxuxb4xrrg5x4pnpsmuth4mu.png)
+
+### HTML
 
     tomdoc -f html lib/tomdoc/source_parser.rb | browser
 
