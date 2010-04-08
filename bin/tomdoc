@@ -2,14 +2,11 @@
 
 require 'tomdoc'
 
-if ARGV.delete('-p')
-  require 'pp'
-  pp TomDoc::SourceParser.parse(ARGF.read)
-elsif ARGV.delete('-s')
-  require 'pp'
-  pp RubyParser.new.parse(ARGF.read)
-elsif ARGV.delete('-w')
-  puts TomDoc::Generators::HTML.generate(ARGF.read)
-else
-  puts TomDoc::Generators::Console.generate(ARGF.read)
-end
+# Help is the default.
+ARGV << '-h' if ARGV.empty? && $stdin.tty?
+
+# Process options
+TomDoc::CLI.parse_options(ARGV) if $stdin.tty?
+
+# Still here - process ARGF
+TomDoc::CLI.process_files(ARGF)
