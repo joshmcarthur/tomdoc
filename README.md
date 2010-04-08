@@ -63,7 +63,16 @@ For now:
 Screenshots
 -----------
 
+    tomdoc lib/tomdoc/source_parser.rb -n token
+
 ![pattern](http://img.skitch.com/20100408-mnyxuxb4xrrg5x4pnpsmuth4mu.png)
+
+    tomdoc -f html lib/tomdoc/source_parser.rb | browser
+
+or
+
+    tomdoc -f html lib/tomdoc/source_parser.rb > doc.html
+    open doc.html
 
 ![html](http://img.skitch.com/20100408-dbhtc4mef2q3ygmn63csxgh14w.png)
 
