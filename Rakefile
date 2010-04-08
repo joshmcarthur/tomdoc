@@ -27,6 +27,16 @@ end
 
 
 #
+# Development
+#
+
+desc "Drop to irb."
+task :console do
+  exec "irb -I lib -rtomdoc"
+end
+
+
+#
 # Gems
 #
 
