@@ -11,12 +11,10 @@ module TomDoc
     #
     # Returns an instance of TomDoc::Generator
     def initialize(options = {}, scopes = {})
-#       @options = {
-#         :validate => true
-#       }
-#       @options.update(options)
-
-      @options = options
+      @options = {
+        :validate => true
+      }
+      @options.update(options)
 
       @scopes  = scopes
       @buffer  = ''

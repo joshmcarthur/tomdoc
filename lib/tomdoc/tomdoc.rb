@@ -17,11 +17,11 @@ module TomDoc
     attr_accessor :raw
 
     def initialize(text)
-      @raw = text
+      @raw = text.to_s
     end
 
     def to_s
-      tomdoc
+      @raw
     end
 
     def self.valid?(text)
