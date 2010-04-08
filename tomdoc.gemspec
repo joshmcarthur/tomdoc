@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   s.files            += Dir.glob("man/**/*")
   s.files            += Dir.glob("test/**/*")
 
-  s.executables       = %w( romdoc )
+  s.executables       = %w( tomdoc )
   s.description       = <<desc
   TomDoc is flexible code documentation with human readers in
   mind. The tomdoc gem is a Ruby library to discover and display
