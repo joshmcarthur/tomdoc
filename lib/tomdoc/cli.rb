@@ -30,6 +30,19 @@ module TomDoc
       self.banner = "Usage: tomdoc [options] FILE1 FILE2 ..."
 
       separator " "
+      separator "Examples:"
+      separator <<example
+  $ tomdoc file.rb
+  # Prints colored documentation of file.rb.
+
+  $ tomdoc file.rb -n STRING
+  # Prints methods or classes in file.rb matching STRING.
+
+  $ tomdoc -f html file.rb
+  # Prints HTML documentation of file.rb.
+example
+
+      separator " "
       separator "Options:"
 
       on "-c", "--colored", "Pass -p, -s, or -t output to Pygments." do
@@ -46,6 +59,13 @@ module TomDoc
       end
 
       on "-s", "--sexp", "Parse FILE and print the AST's sexps." do
+        pp RubyParser.new.parse(argf.read).to_a
+        exit
+      end
+
+      on "-n", "--pattern=PATTERN",
+        "Limit results to strings mattching PATTERN." do
+
         pp RubyParser.new.parse(argf.read).to_a
         exit
       end

@@ -6,6 +6,7 @@ See [the manual][man] or [the spec][spec] for the overview.
 The remainder of this README will cover the Ruby library for parsing
 TomDoc and generating documentation from it.
 
+
 Installation
 ------------
 
@@ -23,6 +24,7 @@ it. You can uninstall it at any time:
 
 tomdoc.rb has been tested with Ruby 1.8.7-p173 and REE 1.8.7-p248.
 
+
 Usage
 -----
 
@@ -38,8 +40,24 @@ Usage
     $ tomdoc -f html file.rb
     # Prints HTML documentation of file.rb.
 
+    $ tomdoc -i file.rb
+    # Ignore TomDoc validation, print any methods we find.
+
+    $ tomdoc -l file.rb
+    # Lint (validate) the TomDoc in a file.
+
     $ tomdoc -h
     # Displays more options.
+
+
+Ruby API
+--------
+
+Fully TomDoc'd. Well, it will be.
+
+For now:
+
+    $ tomdoc lib/tomdoc/source_parser.rb
 
 [man]: https://github.com/defunkt/tomdoc/blob/tomdoc.rb/man/tomdoc.5.ronn
 [spec]: https://github.com/defunkt/tomdoc/blob/tomdoc.rb/tomdoc.md
