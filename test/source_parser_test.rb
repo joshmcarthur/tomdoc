@@ -30,4 +30,14 @@ class SourceParserTest < TomDoc::Test
   test "finds module in a module"
   test "finds module in a class"
   test "finds class in a class"
+
+  test "finds class in a module in a module" do
+    parser = TomDoc::SourceParser.new
+    result = parser.parse(File.read('test/fixtures/multiplex.rb'))
+
+    pp result
+    klass = result[:TomDoc][:Fixtures][:Multiple]
+    assert klass
+    asser_equal 2, klass.instance_methods.size
+  end
 end
