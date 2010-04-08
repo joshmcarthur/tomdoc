@@ -12,5 +12,10 @@ module TomDoc
 
     def default_test
     end
+
+    def fixture(name)
+      @fixtures ||= {}
+      @fixtures[name] ||= File.read("test/fixtures/#{name}.rb")
+    end
   end
 end

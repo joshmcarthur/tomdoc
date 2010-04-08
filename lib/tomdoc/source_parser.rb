@@ -63,6 +63,13 @@ module TomDoc
       @scopes = {}
     end
 
+    # Resets the state of the parser to a pristine one.
+    #
+    # Returns nothing.
+    def reset
+      initialize
+    end
+
     # Converts Ruby code into a data structure. Note that at the
     # instance level scopes accumulate, which makes it easy to parse
     # multiple files in a single project but harder to parse files

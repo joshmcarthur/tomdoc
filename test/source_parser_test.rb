@@ -41,15 +41,25 @@ class SourceParserTest < TomDoc::Test
     assert_equal 1, @result[:GitHub][:Math].instance_methods.size
   end
 
-  test "finds single class in one file"
+  test "finds single class in one file" do
+    @parser.reset
+    result = @parser.parse(fixture(:simple))
+
+    assert result[:Simple]
+
+    methods = result[:Simple].instance_methods
+    assert_equal 1, methods.size
+    assert_equal [:string], methods.map { |m| m.name }
+  end
+
   test "finds single module in one file"
   test "finds module in a module"
   test "finds module in a class"
   test "finds class in a class"
 
   test "finds class in a module in a module" do
-    parser = TomDoc::SourceParser.new
-    result = parser.parse(File.read('test/fixtures/multiplex.rb'))
+    @parser.reset
+    result = @parser.parse(fixture(:multiplex))
 
     pp result
     klass = result[:TomDoc][:Fixtures][:Multiple]
