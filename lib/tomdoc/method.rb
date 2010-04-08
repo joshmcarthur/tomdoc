@@ -1,8 +1,9 @@
 module TomDoc
   # A Method can be instance or class level.
   class Method
-    attr_accessor :name, :args
-    def initialize(name, args = [], comment = '')
+    attr_accessor :name, :comment, :args
+
+    def initialize(name, comment = '', args = [])
       @name    = name
       @comment = comment
       @args    = args || []

@@ -1,17 +1,25 @@
 module TomDoc
   class Generator
-    def self.generate(text)
-      process(SourceParser.parse(text))
-    end
-
-    def self.process(sexp)
-      new(sexp).process
-    end
-
     attr_reader :scopes
-    def initialize(scopes)
-      @scopes = scopes
-      @buffer = ''
+
+    def initialize(options = {}, scopes = {})
+      @options = options
+      @scopes  = scopes
+      @buffer  = ''
+    end
+
+    def self.generate(text_or_sexp)
+      new.generate(text_or_sexp)
+    end
+
+    def generate(text_or_sexp)
+      if text_or_sexp.is_a?(String)
+        sexp = SourceParser.parse(text_or_sexp)
+      else
+        sexp = text_or_sexp
+      end
+
+      process(sexp)
     end
 
     def process(scopes = @scopes, prefix = nil)

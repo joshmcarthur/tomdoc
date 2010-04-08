@@ -10,24 +10,32 @@ module TomDoc
       new.parse(text)
     end
 
-    attr_accessor :parser, :scopes
+    attr_accessor :parser, :scopes, :options
 
     # Each instance of SourceParser accumulates scopes with each
     # parse, making it easy to parse an entire project in chunks but
     # more difficult to parse disperate files in one go. Create
     # separate instances for separate global scopes.
     #
+    # options - Optional Hash of options:
+    #             :validate - Whether or not to validate TomDoc.
+    #
     # Returns an instance of TomDoc::SourceParser
-    def initialize
+    def initialize(options = {})
+      @options = {
+        :validate => true
+      }
+      @options.update(options)
+
       @parser = RubyParser.new
       @scopes = {}
     end
 
-    # Resets the state of the parser to a pristine one.
+    # Resets the state of the parser to a pristine one. Maintains options.
     #
     # Returns nothing.
     def reset
-      initialize
+      initialize(@options)
     end
 
     # Converts Ruby code into a data structure. Note that at the
@@ -47,9 +55,17 @@ module TomDoc
     # Returns a Hash with each key a namespace and each value another
     #   Hash or a TomDoc::Scope.
     def parse(text)
-      sexp = @parser.parse(text)
-      process(tokenize(sexp))
+      process(tokenize(sexp(text)))
       @scopes
+    end
+
+    # Converts Ruby sourcecode into an AST.
+    #
+    # text - A String of Ruby source.
+    #
+    # Returns a Sexp representing the AST.
+    def sexp(text)
+      @parser.parse(text)
     end
 
     # Converts a tokenized Array of classes, modules, and methods into
@@ -63,6 +79,7 @@ module TomDoc
     def process(ast, scope = nil)
       case Array(ast)[0]
       when :module, :class
+        return if !matches_pattern?(ast)
         name = ast[1]
         new_scope = Scope.new(name)
 
@@ -72,16 +89,28 @@ module TomDoc
           @scopes[name] = new_scope
         end
 
-        process(ast[2], new_scope)
+        process(ast[3], new_scope)
       when :imethod
         ast.shift
-        scope.instance_methods << Method.new(*ast) if TomDoc.valid?(ast[2])
+        scope.instance_methods << Method.new(*ast)
       when :cmethod
         ast.shift
-        scope.class_methods << Method.new(*ast) if TomDoc.valid?(ast[2])
+        scope.class_methods << Method.new(*ast)
       when Array
         ast.map { |a| process(a, scope) }
       end
+    end
+
+    def valid?(ast)
+      matches_pattern?(ast[1]) && valid_tomdoc?(ast[2])
+    end
+
+    def valid_tomdoc?(comment)
+      options[:validate] ? TomDoc.valid?(comment) : true
+    end
+
+    def matches_pattern?(name)
+      options[:pattern] ? Regexp.new(options[:pattern]) =~ name.to_s : true
     end
 
     # Converts a Ruby AST-style Sexp into an Array of more useful tokens.
@@ -90,30 +119,33 @@ module TomDoc
     #
     # Examples
     #
-    #   [:module, :Math,
-    #     [:class, :Multiplexer,
+    #   [:module, :Math, "",
+    #     [:class, :Multiplexer, "# Class Comment",
     #       [:cmethod,
-    #         :multiplex, [:text], "# Class Method Comment"],
+    #         :multiplex, "# Class Method Comment", [:text]],
     #       [:imethod,
-    #         :multiplex, [:text, :count], "# Instance Method Comment"]]]
+    #         :multiplex, "# Instance Method Comment", [:text, :count]]]]
+    #
+    #   # In others words:
+    #   # [ :type, :name, :comment, other ]
     #
     # Returns an Array in the above format.
     def tokenize(node)
       case Array(node)[0]
       when :module
         name = node[1]
-        [ :module, name, tokenize(node[2]) ]
+        [ :module, name, node.comments, tokenize(node[2]) ]
       when :class
         name = node[1]
-        [ :class, name, tokenize(node[3]) ]
+        [ :class, name, node.comments, tokenize(node[3]) ]
       when :defn
         name = node[1]
         args = args_for_node(node[2])
-        [ :imethod, name, args, node.comments ]
+        [ :imethod, name, node.comments, args ]
       when :defs
         name = node[2]
         args = args_for_node(node[3])
-        [ :cmethod, name, args, node.comments ]
+        [ :cmethod, name, node.comments, args ]
       when :block
         tokenize(node[1..-1])
       when :scope

@@ -29,24 +29,27 @@ module TomDoc
     end
 
     def valid?
-      tomdoc
-      true
+      validate
     rescue InvalidTomDoc
       false
     end
 
-    def tomdoc
+    def validate
       if !raw.include?('Returns')
         raise InvalidTomDoc.new("No `Returns' statement.")
       end
 
+      if tomdoc.split("\n\n").size < 2
+        raise InvalidTomDoc.new("No description section found.")
+      end
+
+      true
+    end
+
+    def tomdoc
       clean = raw.split("\n").map do |line|
         line =~ /^(\s*# ?)/ ? line.sub($1, '') : nil
       end.compact.join("\n")
-
-      if clean.split("\n\n").size < 2
-        raise InvalidTomDoc.new("No description section found.")
-      end
 
       clean
     end
