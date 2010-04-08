@@ -1,9 +1,23 @@
 module TomDoc
   class Generator
-    attr_reader :scopes
+    attr_reader :options, :scopes
 
+    # Creates a Generator.
+    #
+    # options - Optional Symbol-keyed Hash:
+    #             :validate - Whether or not to validate TomDoc.
+    #
+    # scopes - Optional Symbol-keyed Hash.
+    #
+    # Returns an instance of TomDoc::Generator
     def initialize(options = {}, scopes = {})
+#       @options = {
+#         :validate => true
+#       }
+#       @options.update(options)
+
       @options = options
+
       @scopes  = scopes
       @buffer  = ''
     end
@@ -45,15 +59,21 @@ module TomDoc
     end
 
     def write_class_methods(scope, prefix = nil)
+      prefix ="#{prefix}#{scope.name}."
+
       scope.class_methods.map do |method|
-        write_method(method, "#{prefix}#{scope.name}.")
-      end
+        next if !valid?(method, prefix)
+        write_method(method, prefix)
+      end.compact
     end
 
     def write_instance_methods(scope, prefix = nil)
+      prefix = "#{prefix}#{scope.name}#"
+
       scope.instance_methods.map do |method|
-        write_method(method, "#{prefix}#{scope.name}#")
-      end
+        next if !valid?(method, prefix)
+        write_method(method, prefix)
+      end.compact
     end
 
     def write_method(method, prefix = '')
@@ -82,6 +102,30 @@ module TomDoc
     def constant?(const)
       const = const.split('::').first if const.include?('::')
       Object.const_defined?(const) || @scopes[const.to_sym]
+    end
+
+    def valid?(object, prefix)
+      matches_pattern?(prefix, object.name) && valid_tomdoc?(object.tomdoc)
+    end
+
+    def matches_pattern?(prefix, name)
+      if pattern = options[:pattern]
+        # "-n hey" vs "-n /he.+y/"
+        if pattern =~ /^\/.+\/$/
+          pattern = pattern.sub(/^\//, '').sub(/\/$/, '')
+          regexp = Regexp.new(pattern)
+        else
+          regexp = Regexp.new(Regexp.escape(pattern))
+        end
+
+        regexp =~ name.to_s || regexp =~ prefix.to_s
+      else
+        true
+      end
+    end
+
+    def valid_tomdoc?(comment)
+      options[:validate] ? TomDoc.valid?(comment) : true
     end
   end
 end

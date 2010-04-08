@@ -4,14 +4,16 @@ module TomDoc
   class Scope
     include Enumerable
 
-    attr_accessor :name, :scopes, :instance_methods, :class_methods
-    def initialize(name, instance_methods = [], class_methods = [])
+    attr_accessor :name, :comment, :instance_methods, :class_methods
+    attr_accessor :scopes
+
+    def initialize(name, comment = '', instance_methods = [], class_methods = [])
       @name = name
-      @scopes = {}
+      @comment = comment
       @instance_methods = instance_methods
       @class_methods = class_methods
+      @scopes = {}
     end
-    alias_method :to_s, :name
 
     def [](scope)
       @scopes[scope]

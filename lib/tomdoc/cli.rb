@@ -27,6 +27,8 @@ module TomDoc
     #
 
     options do
+      @options = {}
+
       self.banner = "Usage: tomdoc [options] FILE1 FILE2 ..."
 
       separator " "
@@ -51,9 +53,7 @@ example
       end
 
       on "-t", "--tokens", "Parse FILE and print the tokenized form." do
-        parser = SourceParser.new.parser
-        sexp   = parser.parse(argf.read)
-
+        sexp = SourceParser.new.sexp(argf.read)
         pp SourceParser.new.tokenize(sexp)
         exit
       end
@@ -64,22 +64,18 @@ example
       end
 
       on "-n", "--pattern=PATTERN",
-        "Limit results to strings mattching PATTERN." do
+        "Limit results to strings matching PATTERN." do |pattern|
 
-        pp RubyParser.new.parse(argf.read).to_a
-        exit
+        @options[:pattern] = pattern
       end
 
       on "-f", "--format=FORMAT",
         "Parse FILE and print the TomDoc as FORMAT." do |format|
 
         if format.to_s.downcase == "html"
-          puts Generators::HTML.generate(argf.read)
-        else
-          puts Generators::Console.generate(argf.read)
+          puts Generators::HTML.new(@options).generate(argf.read)
+          exit
         end
-
-        exit
       end
 
       separator " "
@@ -96,7 +92,7 @@ example
       end
 
       on_tail do
-        puts Generators::Console.generate(argf.read)
+        puts Generators::Console.new(@options).generate(argf.read)
         exit
       end
 

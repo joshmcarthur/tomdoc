@@ -17,18 +17,11 @@ module TomDoc
     # more difficult to parse disperate files in one go. Create
     # separate instances for separate global scopes.
     #
-    # options - Optional Hash of options:
-    #             :validate - Whether or not to validate TomDoc.
-    #
     # Returns an instance of TomDoc::SourceParser
     def initialize(options = {})
-      @options = {
-        :validate => true
-      }
-      @options.update(options)
-
-      @parser = RubyParser.new
-      @scopes = {}
+      @options = {}
+      @parser  = RubyParser.new
+      @scopes  = {}
     end
 
     # Resets the state of the parser to a pristine one. Maintains options.
@@ -79,9 +72,8 @@ module TomDoc
     def process(ast, scope = nil)
       case Array(ast)[0]
       when :module, :class
-        return if !matches_pattern?(ast)
         name = ast[1]
-        new_scope = Scope.new(name)
+        new_scope = Scope.new(name, ast[2])
 
         if scope
           scope.scopes[name] = new_scope
@@ -99,18 +91,6 @@ module TomDoc
       when Array
         ast.map { |a| process(a, scope) }
       end
-    end
-
-    def valid?(ast)
-      matches_pattern?(ast[1]) && valid_tomdoc?(ast[2])
-    end
-
-    def valid_tomdoc?(comment)
-      options[:validate] ? TomDoc.valid?(comment) : true
-    end
-
-    def matches_pattern?(name)
-      options[:pattern] ? Regexp.new(options[:pattern]) =~ name.to_s : true
     end
 
     # Converts a Ruby AST-style Sexp into an Array of more useful tokens.

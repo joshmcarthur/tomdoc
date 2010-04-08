@@ -8,10 +8,7 @@ module TomDoc
       @comment = comment
       @args    = args || []
     end
-
-    def to_s
-      name
-    end
+    alias_method :to_s, :name
 
     def tomdoc
       @tomdoc ||= TomDoc.new(@comment)
