@@ -1,10 +1,9 @@
 require 'test/helper'
 
-class SourceParserTest < TomDoc::Test
+class ChimneySourceParserTest < TomDoc::Test
   def setup
-    @chimney = File.read("test/fixtures/chimney.rb")
     @parser = TomDoc::SourceParser.new
-    @result = @parser.parse(@chimney)
+    @result = @parser.parse(fixture(:chimney))
 
     @chimney = @result[:GitHub][:Chimney]
   end
@@ -40,9 +39,14 @@ class SourceParserTest < TomDoc::Test
   test "finds multiple classes in one file" do
     assert_equal 1, @result[:GitHub][:Math].instance_methods.size
   end
+end
+
+class SourceParserTest < TomDoc::Test
+  def setup
+    @parser = TomDoc::SourceParser.new
+  end
 
   test "finds single class in one file" do
-    @parser.reset
     result = @parser.parse(fixture(:simple))
 
     assert result[:Simple]
@@ -58,7 +62,6 @@ class SourceParserTest < TomDoc::Test
   test "finds class in a class"
 
   test "finds class in a module in a module" do
-    @parser.reset
     result = @parser.parse(fixture(:multiplex))
 
     pp result

@@ -99,23 +99,31 @@ module TomDoc
       sexp = @parser.parse(text)
 
       (sexp / scope_query).each do |result|
-        scopes = result.sexp[1..-1] / scope_query
-        next unless scopes.any?
+        sexp   = result.sexp[1..-1]
+        scopes = sexp / scope_query
+        name   = result['name']
 
-        namespace = result['name']
-        @scopes[namespace] ||= {}
+        if scopes.any?
+          @scopes[name] ||= {}
 
-        scopes.each do |scope|
-          sexp = scope.sexp
-          scope = Scope.new(scope['name'])
-          scope.instance_methods = build_methods(sexp / imethod_query)
-          scope.class_methods    = build_methods(sexp / cmethod_query)
-
-          @scopes[namespace][scope.name] = scope
+          scopes.each do |scope|
+            @scopes[name][scope['name']] = build_scope(scope)
+          end
+        else
+          @scopes[name] = build_scope(result)
         end
       end
 
       @scopes
+    end
+
+    def build_scope(scope)
+      sexp = scope.sexp
+      scope = Scope.new(scope['name'])
+      scope.instance_methods = build_methods(sexp / imethod_query)
+      scope.class_methods    = build_methods(sexp / cmethod_query)
+
+      scope
     end
 
     # Helps build Method objects from method definition sexps. Ignores
