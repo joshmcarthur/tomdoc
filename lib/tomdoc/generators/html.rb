@@ -32,7 +32,7 @@ module TomDoc
         out << "<b>#{prefix}#{method.to_s}#{args}</b>"
 
         out << '<pre>'
-        out << method.tomdoc.to_s
+        out << method.tomdoc.tomdoc
         out << '</pre>'
 
         out << '</li>'
