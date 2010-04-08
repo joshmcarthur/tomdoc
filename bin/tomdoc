@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+
+require 'tomdoc'
+
+if ARGV.delete('-p')
+  require 'pp'
+  pp TomDoc::SourceParser.parse(ARGF.read)
+elsif ARGV.delete('-s')
+  require 'pp'
+  pp RubyParser.new.parse(ARGF.read)
+elsif ARGV.delete('-w')
+  puts TomDoc::Generators::HTML.generate(ARGF.read)
+else
+  puts TomDoc::Generators::Console.generate(ARGF.read)
+end
