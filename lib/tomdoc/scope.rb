@@ -10,5 +10,9 @@ module TomDoc
       @class_methods = class_methods
     end
     alias_method :to_s, :name
+
+    def inspect
+      "<#{name} :#{@class_methods.inspect}: ##{@instance_methods.inspect}#>"
+    end
   end
 end

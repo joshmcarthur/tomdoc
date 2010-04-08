@@ -15,5 +15,9 @@ module TomDoc
     def tomdoc
       TomDoc.new(@tomdoc)
     end
+
+    def inspect
+      "#{name}(#{args.join(', ')})"
+    end
   end
 end

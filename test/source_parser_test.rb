@@ -5,12 +5,29 @@ class SourceParserTest < TomDoc::Test
     @chimney = File.read("test/fixtures/chimney.rb")
     @parser = TomDoc::SourceParser.new
     @result = @parser.parse(@chimney)
+
+    @chimney = @result[:GitHub][:Chimney]
   end
 
-  test "parses" do
-    pp @result
-    assert @result[:GitHub]
-    assert @result[:GitHub][:Chimney]
+  test "finds instance methods" do
+    assert_equal 27, @chimney.instance_methods.size
+  end
+
+  test "finds class methods" do
+    assert_equal 9, @chimney.class_methods.size
+  end
+
+  test "finds namespaces" do
     assert @result[:GitHub][:Math]
   end
+
+  test "finds multiple classes in one file" do
+    assert_equal 1, @result[:GitHub][:Math].instance_methods.size
+  end
+
+  test "finds single class in one file"
+  test "finds single module in one file"
+  test "finds module in a module"
+  test "finds module in a class"
+  test "finds class in a class"
 end

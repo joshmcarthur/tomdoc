@@ -1,6 +1,7 @@
 require 'pp'
 
 require 'ruby_parser'
+require 'sexp_path'
 require 'colored'
 
 module TomDoc

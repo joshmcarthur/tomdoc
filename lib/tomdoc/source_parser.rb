@@ -13,74 +13,53 @@ module TomDoc
     def parse(text)
       sexp = @parser.parse(text)
 
-      case sexp[0]
-      when :class, :module
-        name    = sexp[1]
-        inner   = sexp.last[1]
+      scope_query = Q?{
+        any(
+          s(:class, atom % 'name', _, _),
+          s(:module, atom % 'name', _)
+        )
+      }
 
-        @scopes[name] = build_scope(name, inner)
+      imethod_query = Q?{ s(:defn, atom % 'name', _, _) }
+      cmethod_query = Q?{ s(:defs, _, atom % 'name', _, _) }
+
+      (sexp / scope_query).each do |result|
+        scopes = result.sexp[1..-1] / scope_query
+        next unless scopes.any?
+
+        namespace = result['name']
+        @scopes[namespace] ||= {}
+
+        scopes.each do |scope|
+          sexp = scope.sexp
+          scope = Scope.new(scope['name'])
+          scope.instance_methods = build_methods(sexp / imethod_query)
+          scope.class_methods    = build_methods(sexp / cmethod_query)
+
+          @scopes[namespace][scope.name] = scope
+        end
       end
 
       @scopes
     end
 
-    def build_scope(name, sexp)
-      if sexp[0] == :class || sexp[0] == :module
-        name  = sexp[1]
-        inner = sexp.last[1]
-        scopes = {}
-      elsif sexp[0] == :block
-        inner = sexp[1..-1]
-      else
-        puts "I don't understand: "
-        pp sexp
-        exit 1
-      end
-
-      scope = Scope.new(name)
-      scope.instance_methods = detect_instance_methods(inner)
-      scope.class_methods    = detect_class_methods(inner)
-
-      if scopes
-        scopes[name] = scope
-        scopes
-      else
-        scope
-      end
-    end
-
-    def detect_instance_methods(sexp)
-      detect_methods(:defn, sexp)
-    end
-
-    def detect_class_methods(sexp)
-      detect_methods(:defs, sexp)
-    end
-
-    def detect_methods(type, sexp)
-      methods = []
-
-      sexp.each do |method|
-        next unless method.is_a?(Array) && type == method[0]
-
-        tomdoc = TomDoc.new(method.comments)
+    def build_methods(methods)
+      methods.map do |method|
+        tomdoc = TomDoc.new(method.sexp.comments)
         next unless tomdoc.valid?
 
-        # Hack for static methods - second arg is their scope
-        method.delete_at(1) if type == :defs
+        Method.new(method['name'], method.sexp.comments, build_args(method))
+      end.compact
+    end
 
-        name = method[1]
-        args = []
+    def build_args(method)
+      args = method.sexp / args_query
+      return [] unless args.any?
+      args.first.sexp[1..-1].select { |arg| arg.is_a? Symbol }
+    end
 
-        if method[2].size > 1
-          args = method[2][1..-1]
-          args.pop if args.last.is_a?(Array)
-        end
-
-        methods << Method.new(name, method.comments, args)
-      end
-
-      methods
+    def args_query
+      Q?{ t(:args) }
     end
   end
 end
