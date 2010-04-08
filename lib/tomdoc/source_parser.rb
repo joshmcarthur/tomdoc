@@ -9,7 +9,7 @@ module TomDoc
     #
     # Returns nothing.
     def self.query(name, query)
-      define_method("#{name}_query", query)
+      define_method("#{name}_query", proc { query })
     end
 
     #
@@ -32,11 +32,11 @@ module TomDoc
 
     query :args, Q?{ t(:args) }
 
-    query :instance_methods, Q?{
+    query :imethod, Q?{
       s(:defn, atom % 'name', _, _)
     }
 
-    query :class_methods, Q?{
+    query :cmethod, Q?{
       s(:defs, _, atom % 'name', _, _)
     }
 
@@ -120,8 +120,8 @@ module TomDoc
 
     # Given a method definition sexp, returns an array of argument
     # names.
-    def build_args(method)
-      args = method.sexp / args_query
+    def build_args(sexp)
+      args = sexp / args_query
       return [] unless args.any?
       args.first.sexp[1..-1].select { |arg| arg.is_a? Symbol }
     end
