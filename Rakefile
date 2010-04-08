@@ -32,7 +32,7 @@ end
 
 begin
   require 'mg'
-  MG.new("tomdoc-generator.gemspec")
+  MG.new("tomdoc.gemspec")
 
   desc "Build a gem."
   task :gem => :package
@@ -42,7 +42,7 @@ begin
 
   desc "Push a new version to Gemcutter and publish docs."
   task :publish => :gemcutter do
-    require File.dirname(__FILE__) + '/lib/tomdoc-generator/version'
+    require File.dirname(__FILE__) + '/lib/tomdoc/version'
 
     system "git tag v#{TomDoc::VERSION}"
     sh "git push origin master --tags"
