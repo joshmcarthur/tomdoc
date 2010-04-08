@@ -5,6 +5,16 @@ module TomDoc
         pygments(text, '-l', 'ruby')
       end
 
+      def write_scope_header(scope, prefix = '')
+        return if scope.tomdoc.to_s.empty?
+
+        prefix = "#{prefix}#{scope.name}"
+        bars   = 80 - (prefix.size + 4)
+
+        write ('-' * bars) + ' <= ' + prefix
+        write format_comment(scope.tomdoc)
+      end
+
       def write_method(method, prefix = '')
         write '-' * 80
         write "#{prefix}#{method.name}#{args(method)}".bold, ''

@@ -16,6 +16,108 @@ module GitHub
           "and now you are, too."
   end
 
+  # Chimney is the API for getting and setting Smoke routes.
+  #
+  # Setup
+  # -----
+  #
+  # In order for Chimney to function, some setup keys are required to exist in the
+  # routing Redis. This sections shows you how to enter the required
+  # information. Start by connecting to the routing Redis:
+  #
+  #     require 'chimney'
+  #     chimney = Chimney.new('router.example.com:21201')
+  #
+  # The routing Redis must contain one or more storage host values.
+  #
+  #     chimney.add_storage_server('s1.example.com')
+  #     chimney.add_storage_server('s2.example.com')
+  #
+  # Each storage host is expected to have disk usage information (percent of disk
+  # used) that is kept up to date (via cron or similar). If these are not set, the
+  # host that will be chosen for new routes is arbitrary, but will always be the
+  # same. This is a simple example of a cron script that is responsible for
+  # updating the usage keys:
+  #
+  #     (0..15).map { |num| num.to_s(16) }.each do |part|
+  #       host = get_current_host # => 's1.example.com'
+  #       percent_used = get_partition_usage(part) # => 17.23
+  #       chimney.set_partition_usage(host, part, percent_used)
+  #     end
+  #
+  # Usage
+  # -----
+  #
+  # Make sure you require this sucker.
+  #
+  #     require 'chimney'
+  #
+  # Chimney must be initialized with the host:port of the routing Redis server.
+  #
+  #     chimney = Chimney.new('router.example.com:21201')
+  #
+  # Looking up a route for a user is simple. This command simply finds the host
+  # upon which the user is stored. If the router Redis is unreachable, Chimney
+  # will check its internal cache. If that is a miss, it will try to reconnect to
+  # the router. If that fails, it will fallback on making calls to Smoke and
+  # checking each storage server for the user. Subsequent lookups will then be
+  # able to find the route in the cache. This mechanism should ensure high
+  # tolerance to failures of the routing server.
+  #
+  #     chimney.get_user_route('mojombo')
+  #     # => 'domU-12-31-38-01-C8-F1.compute-1.internal'
+  #
+  # Setting a route for a new user is also a simple call. This command will first
+  # refresh the cached list of available storage hosts, then figure out which one
+  # of them is least loaded. This host will be set as the route for the user and
+  # returned. If the user already exists in the routing table, the host is
+  # returned and the routing table is unaffected.
+  #
+  #     chimney.set_user_route('franko')
+  #     # => domU-12-31-38-01-C8-F1.compute-1.internal
+  #
+  # If you need to change the name of the user, but keep the host the same:
+  #
+  #     chimney.rename_user_route('oldname', 'newname')
+  #
+  # If you need to remove a route for a user:
+  #
+  #     chimney.delete_user_route('mojombo')
+  #
+  # If you need the absolute path to a user on disk (class or instance method):
+  #
+  #     Chimney.shard_user_path('mojombo')
+  #     chimney.shard_user_path('mojombo')
+  #     # => "/data/repositories/2/a8/e2/95/mojombo"
+  #
+  # If you need the absolute path to a repo on disk (class or instance method):
+  #
+  #     Chimney.shard_repo_path('mojombo', 'god')
+  #     chimney.shard_repo_path('mojombo', 'god')
+  #     # => "/data/repositories/2/a8/e2/95/mojombo/god.git"
+  #
+  # Getting and setting routes for gists is similar to that for users:
+  #
+  #     chimney.get_gist_route('1234')
+  #     # => 'domU-12-31-38-01-C8-F1.compute-1.internal'
+  #
+  #     chimney.set_gist_route('4e460bfd6c184058c7a3')
+  #     # => 'domU-12-31-38-01-C8-F1.compute-1.internal'
+  #
+  # If you need the absolute path to a gist on disk (class or instance method):
+  #
+  #     Chimney.shard_gist_path('1234')
+  #     chimney.shard_gist_path('1234')
+  #     # => "/data/repositories/0/81/dc/9b/gist/1234.git"
+  #
+  # If you need the unix user that has access to the repository data (class or
+  # instance method):
+  #
+  #     Chimney.unix_user
+  #     chimney.unix_user
+  #     # => 'root'
+  #
+  # That's it!
   class Chimney
     SMOKE_HOSTS_FILE = '/tmp/smoke_hosts'
     REPO_DIR = ENV['REPO_ROOT'] || '/data/repositories'
