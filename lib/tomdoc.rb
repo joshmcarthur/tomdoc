@@ -22,8 +22,4 @@ module TomDoc
     autoload :Console, 'tomdoc/generators/console'
     autoload :HTML,    'tomdoc/generators/html'
   end
-
-  def self.generate(text)
-    Generator.process(Parser.parse(text))
-  end
 end

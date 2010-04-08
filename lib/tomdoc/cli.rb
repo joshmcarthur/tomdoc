@@ -37,7 +37,7 @@ module TomDoc
         exec "#{$0} #{ARGV * ' '} | pygmentize -l ruby"
       end
 
-      on "-t", "--tokens FILE", "Parse FILE and print the tokenized form." do
+      on "-t", "--tokens", "Parse FILE and print the tokenized form." do
         parser = SourceParser.new.parser
         sexp   = parser.parse(argf.read)
 
@@ -45,13 +45,20 @@ module TomDoc
         exit
       end
 
-      on "-s", "--sexp FILE", "Parse FILE and print the AST's sexps." do
+      on "-s", "--sexp", "Parse FILE and print the AST's sexps." do
         pp RubyParser.new.parse(argf.read).to_a
         exit
       end
 
-      on "-w", "--html FILE", "Parse FILE and print the TomDoc as HTML." do
-        puts Generators::HTML.generate(argf.read)
+      on "-f", "--format=FORMAT",
+        "Parse FILE and print the TomDoc as FORMAT." do |format|
+
+        if format.to_s.downcase == "html"
+          puts Generators::HTML.generate(argf.read)
+        else
+          puts Generators::Console.generate(argf.read)
+        end
+
         exit
       end
 
