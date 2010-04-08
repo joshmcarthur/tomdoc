@@ -13,6 +13,22 @@ class SourceParserTest < TomDoc::Test
     assert_equal 27, @chimney.instance_methods.size
   end
 
+  test "attaches TomDoc" do
+    m = @chimney.instance_methods.detect { |m| m.name == :get_user_route }
+    assert_equal [:user], m.tomdoc.args.map { |a| a.name }
+  end
+
+  test "ignores invalid TomDoc'd methods" do
+    inames = @chimney.instance_methods.map { |m| m.name }
+    cnames = @chimney.class_methods.map { |m| m.name }
+
+    assert !inames.include?(:smoke)
+    assert !cnames.include?(:storage_server_disruption)
+
+    # Sanity check
+    assert inames.include?(:get_user_route)
+  end
+
   test "finds class methods" do
     assert_equal 9, @chimney.class_methods.size
   end

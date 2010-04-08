@@ -2,10 +2,10 @@ module TomDoc
   # A Method can be instance or class level.
   class Method
     attr_accessor :name, :args
-    def initialize(name, tomdoc = '', args = [])
-      @name   = name
-      @tomdoc = tomdoc
-      @args   = args
+    def initialize(name, comment = '', args = [])
+      @name    = name
+      @comment = comment
+      @args    = args
     end
 
     def to_s
@@ -13,7 +13,7 @@ module TomDoc
     end
 
     def tomdoc
-      TomDoc.new(@tomdoc)
+      @tomdoc ||= TomDoc.new(@comment)
     end
 
     def inspect

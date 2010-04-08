@@ -62,9 +62,9 @@ comment3
   end
 
   test "knows an arg's name" do
-    assert_equal 'text', @comment.args.first.name
-    assert_equal 'count', @comment.args[1].name
-    assert_equal 'reverse', @comment.args[2].name
+    assert_equal :text, @comment.args.first.name
+    assert_equal :count, @comment.args[1].name
+    assert_equal :reverse, @comment.args[2].name
   end
 
   test "knows an arg's description" do

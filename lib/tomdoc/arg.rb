@@ -3,7 +3,7 @@ module TomDoc
     attr_accessor :name, :description
 
     def initialize(name, description = '')
-      @name = name
+      @name = name.to_s.intern
       @description = description
     end
 

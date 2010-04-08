@@ -108,11 +108,11 @@ module TomDoc
       built = []
 
       methods.each do |method|
-        sexp   = method.sexp
-        tomdoc = TomDoc.new(sexp.comments)
-        next unless tomdoc.valid?
+        sexp    = method.sexp
+        comment = sexp.comments
+        next unless TomDoc.valid?(comment)
 
-        built << Method.new(method['name'], tomdoc, build_args(sexp))
+        built << Method.new(method['name'], comment, build_args(sexp))
       end
 
       built

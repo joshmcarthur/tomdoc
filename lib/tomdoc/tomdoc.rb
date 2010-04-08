@@ -24,6 +24,10 @@ module TomDoc
       tomdoc
     end
 
+    def self.valid?(text)
+      new(text).valid?
+    end
+
     def valid?
       tomdoc
       true
