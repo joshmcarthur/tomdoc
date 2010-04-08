@@ -1,10 +1,11 @@
+require 'tomdoc/version'
 
 Gem::Specification.new do |s|
-  s.name              = "romdoc"
-  s.version           = "0.1.0"
+  s.name              = "tomdoc"
+  s.version           = TomDoc::VERSION
   s.date              = Time.now.strftime('%Y-%m-%d')
   s.summary           = "A TomDoc library for Ruby."
-  s.homepage          = "http://github.com/defunkt/romdoc"
+  s.homepage          = "http://github.com/defunkt/tomdoc"
   s.email             = "chris@ozmm.org"
   s.authors           = [ "Chris Wanstrath" ]
   s.has_rdoc          = false
@@ -17,14 +18,14 @@ Gem::Specification.new do |s|
 
   s.executables       = %w( romdoc )
   s.description       = <<desc
-  TomDoc is a flexible code documentation with human readers in
-  mind. romdoc is a Ruby library to discover and display TomDoc'd
-  methods and classes.
+  TomDoc is flexible code documentation with human readers in
+  mind. The tomdoc gem is a Ruby library to discover and display
+  TomDoc'd methods and classes.
 
-  Given a Ruby file with TomDoc'd methods, romdoc can generate HTML or
+  Given a Ruby file with TomDoc'd methods, tomdoc can generate HTML or
   print to the console. You can use it to query up a single method or
   a group of methods, and it's usable from irb.
 
-  If you're using TomDoc, romdoc is for you.
+  If you're using TomDoc, tomdoc is for you.
 desc
 end
