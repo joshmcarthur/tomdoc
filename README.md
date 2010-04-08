@@ -59,5 +59,13 @@ For now:
 
     $ tomdoc lib/tomdoc/source_parser.rb
 
+
+Screenshots
+-----------
+
+![pattern](http://img.skitch.com/20100408-mnyxuxb4xrrg5x4pnpsmuth4mu.png)
+
+![html](http://img.skitch.com/20100408-dbhtc4mef2q3ygmn63csxgh14w.png)
+
 [man]: https://github.com/defunkt/tomdoc/blob/tomdoc.rb/man/tomdoc.5.ronn
 [spec]: https://github.com/defunkt/tomdoc/blob/tomdoc.rb/tomdoc.md
