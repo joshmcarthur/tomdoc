@@ -7,6 +7,9 @@ module TomDoc
     #        argument.
     # query - The sexp_path query.
     #
+    # Examples
+    #   query :args, Q?{ t(:args) }
+    #
     # Returns nothing.
     def self.query(name, query)
       define_method("#{name}_query", proc { query })
@@ -22,6 +25,12 @@ module TomDoc
     # Any query, once defined, can be used in the parser by calling
     # "name_query", where name is the first argument to the `query`
     # method.
+    #
+    # For example this query:
+    #   query :args, Q?{ t(:args) }
+    #
+    # Can be used by calling `args_query`, like so:
+    #   sexp / args_query
 
     query :scope, Q?{
       any(

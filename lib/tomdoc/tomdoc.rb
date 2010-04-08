@@ -40,9 +40,15 @@ module TomDoc
         raise InvalidTomDoc.new("No `Returns' statement.")
       end
 
-      raw.split("\n").map do |line|
+      clean = raw.split("\n").map do |line|
         line =~ /^(\s*# ?)/ ? line.sub($1, '') : nil
       end.compact.join("\n")
+
+      if clean.split("\n\n").size < 2
+        raise InvalidTomDoc.new("No description section found.")
+      end
+
+      clean
     end
 
     def sections
