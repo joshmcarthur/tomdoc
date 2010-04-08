@@ -41,15 +41,33 @@ module TomDoc
       end.compact.join("\n")
     end
 
+    def sections
+      tomdoc.split("\n\n")
+    end
+
     def description
-      tomdoc.split("\n\n").first
+      sections.first
     end
 
     def args
-      tomdoc.split("\n\n")[1].map do |line|
-        param, desc = line.split(" - ")
-        Arg.new(param.strip, desc.strip) if param && desc
-      end.compact
+      args = []
+      last_indent = nil
+
+      sections[1].split("\n").each do |line|
+        next if line.strip.empty?
+        indent = line.scan(/^\s*/)[0].to_s.size
+
+        if last_indent && indent > last_indent
+          args.last.description += line.squeeze(" ")
+        else
+          param, desc = line.split(" - ")
+          args << Arg.new(param.strip, desc.strip) if param && desc
+        end
+
+        last_indent = indent
+      end
+
+      args
     end
 
     def examples

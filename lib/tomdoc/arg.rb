@@ -6,5 +6,9 @@ module TomDoc
       @name = name
       @description = description
     end
+
+    def optional?
+      @description.downcase.include? 'optional'
+    end
   end
 end

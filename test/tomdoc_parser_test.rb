@@ -5,8 +5,11 @@ class TomDocParserTest < TomDoc::Test
     @comment = TomDoc::TomDoc.new(<<comment)
     # Duplicate some text an abitrary number of times.
     #
-    # text  - The String to be duplicated.
-    # count - The Integer number of times to duplicate the text.
+    # text    - The String to be duplicated.
+    # count   - The Integer number of times to
+    #           duplicate the text.
+    # reverse - An optional Boolean indicating
+    #           whether to reverse the result text or not.
     #
     # Examples
     #   multiplex('Tom', 4)
@@ -55,22 +58,27 @@ comment3
   end
 
   test "parses args" do
-    assert_equal 2, @comment.args.size
+    assert_equal 3, @comment.args.size
   end
 
   test "knows an arg's name" do
     assert_equal 'text', @comment.args.first.name
+    assert_equal 'count', @comment.args[1].name
+    assert_equal 'reverse', @comment.args[2].name
   end
 
   test "knows an arg's description" do
     assert_equal 'The Integer number of times to duplicate the text.',
-      @comment.args.last.description
+      @comment.args[1].description
+
+    reverse = 'An optional Boolean indicating whether to reverse the'
+    reverse << ' result text or not.'
+    assert_equal reverse, @comment.args[2].description
   end
 
   test "knows an arg's optionality" do
-    assert_equal true, @comment.args.first.optional?
-    assert_equal false, @comment.args.last.optional?
-    assert_equal 1, @comment.args.last.default
+    assert_equal false, @comment.args.first.optional?
+    assert_equal true, @comment.args.last.optional?
   end
 
   test "knows what to do when there are no args" do
