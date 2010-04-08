@@ -2,11 +2,5 @@
 
 require 'tomdoc'
 
-# Help is the default.
-ARGV << '-h' if ARGV.empty? && $stdin.tty?
-
 # Process options
-TomDoc::CLI.parse_options(ARGV) if $stdin.tty?
-
-# Still here - process ARGF
-TomDoc::CLI.process_files(ARGF)
+TomDoc::CLI.parse_options(ARGV)
