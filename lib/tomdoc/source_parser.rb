@@ -52,6 +52,11 @@ module TomDoc
       @scopes
     end
 
+    # Converts a tokenized Array of classes, modules, and methods into
+    # Scopes and Methods, adding them to the @scopes instance variable
+    # as it works.
+    #
+    # Returns nothing.
     def process(ast, scope = nil)
       case ast[0]
       when :module, :class

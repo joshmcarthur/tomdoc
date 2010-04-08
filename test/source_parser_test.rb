@@ -64,7 +64,6 @@ class SourceParserTest < TomDoc::Test
   test "finds class in a class"
 
   test "finds class in a module in a module" do
-
     result = @parser.parse(fixture(:multiplex))
     klass = result[:TomDoc][:Fixtures][:Multiplex]
     assert klass

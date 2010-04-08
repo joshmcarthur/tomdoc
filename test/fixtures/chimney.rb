@@ -1,3 +1,8 @@
+# module Butter
+#   class Something
+#   end
+# end
+
 module GitHub
   class Chimney
     SMOKE_HOSTS_FILE = '/tmp/smoke_hosts'
