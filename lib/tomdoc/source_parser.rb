@@ -58,7 +58,7 @@ module TomDoc
     #
     # Returns nothing.
     def process(ast, scope = nil)
-      case ast[0]
+      case Array(ast)[0]
       when :module, :class
         name = ast[1]
         new_scope = Scope.new(name)

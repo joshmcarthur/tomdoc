@@ -1,7 +1,7 @@
-# module Butter
-#   class Something
-#   end
-# end
+module Butter
+  class Something
+  end
+end
 
 module GitHub
   class Chimney

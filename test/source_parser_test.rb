@@ -34,7 +34,7 @@ class ChimneySourceParserTest < TomDoc::Test
 
   test "finds namespaces" do
     assert @result[:GitHub][:Math]
-    assert_equal 1, @result.keys.size
+    assert_equal 2, @result.keys.size
     assert_equal 2, @result[:GitHub].keys.size
   end
 
