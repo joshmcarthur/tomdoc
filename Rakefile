@@ -62,22 +62,12 @@ end
 #
 
 begin
+  require 'tomdoc/version'
   require 'mg'
   MG.new("tomdoc.gemspec")
 
-  desc "Build a gem."
-  task :gem => :install
-
-  desc "Install a gem"
-  task "gem:install" => :gem do
-    sh "gem install dist/*.gem"
-  end
-
-  # Ensure tests pass before pushing a gem.
-  task :gemcutter => :test
-
   desc "Push a new version to Gemcutter and publish docs."
-  task :publish => :gemcutter do
+  task :publish => "gem:publish" do
     require File.dirname(__FILE__) + '/lib/tomdoc/version'
 
     sh "git tag v#{TomDoc::VERSION}"
