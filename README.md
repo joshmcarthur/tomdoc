@@ -31,6 +31,14 @@ Like this:
 See [the manual][man] or [the spec][spec] for a more in-depth
 analysis.
 
+It's important to note that TomDoc is complimentary to most existing
+documentation systems. Because it introduces no syntax of its own,
+merely conventions, you can use it with Ruby's RDoc or any other
+existing documentation format.
+
+More than anything it's a guide for documenting methods and
+classes.
+
 
 tomdoc.rb
 ---------
