@@ -14,7 +14,7 @@ module TomDoc
 
     # Each instance of SourceParser accumulates scopes with each
     # parse, making it easy to parse an entire project in chunks but
-    # more difficult to parse disperate files in one go. Create
+    # more difficult to parse disparate files in one go. Create
     # separate instances for separate global scopes.
     #
     # Returns an instance of TomDoc::SourceParser

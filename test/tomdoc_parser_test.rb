@@ -25,6 +25,8 @@ class TomDocParserTest < TomDoc::Test
     # Returns the atomic mass of the element as a Float. The value is in
     #   unified atomic mass units.
     # Returns nil when the count is < 1.
+    # Raises ExpectedString if the first argument is not a String.
+    # Raises ExpectedInteger if the second argument is not an Integer.
 comment
 
     @comment2 = TomDoc::TomDoc.new(<<comment2)
@@ -100,6 +102,10 @@ comment3
 
   test "knows how many return examples there are" do
     assert_equal 3, @comment.returns.size
+  end
+
+  test "knows if the method raises anything" do
+    assert_equal 2, @comment.raises.size
   end
 
   test "knows each return example" do

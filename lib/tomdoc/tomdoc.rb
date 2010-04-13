@@ -84,7 +84,7 @@ module TomDoc
     end
 
     def examples
-      if tomdoc =~ /(\s*Examples\s*(.+?)\s*Returns)/m
+      if tomdoc =~ /(\s*Examples\s*(.+?)\s*(?:Returns|Raises))/m
         $2.split("\n\n")
       else
         []
@@ -93,6 +93,26 @@ module TomDoc
 
     def returns
       if tomdoc =~ /^\s*(Returns.+)/m
+        lines = $1.split("\n")
+        statements = []
+
+        lines.each do |line|
+          next if line =~ /^\s*Raises/
+          if line =~ /^\s+/
+            statements.last << line.squeeze(' ')
+          else
+            statements << line
+          end
+        end
+
+        statements
+      else
+        []
+      end
+    end
+
+    def raises
+      if tomdoc =~ /^\s*(Raises.+)/m
         lines = $1.split("\n")
         statements = []
 
