@@ -77,6 +77,8 @@ module TomDoc
 
         if scope
           scope.scopes[name] = new_scope
+        elsif @scopes[name]
+          new_scope = @scopes[name]
         else
           @scopes[name] = new_scope
         end

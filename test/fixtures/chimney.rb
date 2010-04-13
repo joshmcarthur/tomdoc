@@ -699,3 +699,13 @@ module GitHub
     end
   end
 end
+
+module GitHub
+  class Jobs
+    # Performs a job.
+    #
+    # Returns nothing.
+    def perform
+    end
+  end
+end

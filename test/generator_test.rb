@@ -15,12 +15,12 @@ class GeneratorTest < TomDoc::Test
   test "can ignore validation methods" do
     @generator.options[:validate] = false
     methods = @generator.generate(fixture(:chimney))
-    assert_equal 46, methods.size
+    assert_equal 47, methods.size
   end
 
   test "ignores invalid methods" do
     @generator.options[:validate] = true
     methods = @generator.generate(fixture(:chimney))
-    assert_equal 38, methods.size
+    assert_equal 39, methods.size
   end
 end
