@@ -23,4 +23,25 @@ class GeneratorTest < TomDoc::Test
     methods = @generator.generate(fixture(:chimney))
     assert_equal 39, methods.size
   end
+
+  test "detects built-in constants" do
+    assert @generator.constant?('Object')
+    assert @generator.constant?('Kernel')
+    assert @generator.constant?('String')
+  end
+
+  test "detects common constants" do
+    assert @generator.constant?('Boolean')
+    assert @generator.constant?('Test::Unit::TestCase')
+  end
+
+  test "picks up constants from the thing we're TomDocin'" do
+    scope = { :Chimney => TomDoc::Scope.new('Chimney') }
+    @generator.instance_variable_set(:@scopes, scope)
+    assert @generator.constant?('Chimney')
+  end
+
+  test "ignores non-constants" do
+    assert !@generator.constant?('Dog')
+  end
 end

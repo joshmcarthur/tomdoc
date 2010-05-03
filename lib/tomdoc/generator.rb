@@ -16,8 +16,8 @@ module TomDoc
       }
       @options.update(options)
 
-      @scopes  = scopes
-      @buffer  = ''
+      @scopes = {}
+      @buffer = ''
     end
 
     def self.generate(text_or_sexp)
@@ -34,13 +34,17 @@ module TomDoc
       process(sexp)
     end
 
-    def process(scopes = @scopes, prefix = nil)
+    def process(scopes = {}, prefix = nil)
+      old_scopes = @scopes
+      @scopes = scopes
       scopes.each do |name, scope|
         write_scope(scope, prefix)
         process(scope, "#{name}::")
       end
 
       @buffer
+    ensure
+      @scopes = old_scopes || {}
     end
 
     def write_scope(scope, prefix)
@@ -99,7 +103,12 @@ module TomDoc
 
     def constant?(const)
       const = const.split('::').first if const.include?('::')
-      Object.const_defined?(const) || @scopes[const.to_sym]
+      constant_names.include?(const.intern) || Object.const_defined?(const)
+    end
+
+    def constant_names
+      name = @scopes.name if @scopes.respond_to?(:name)
+      [ :Boolean, :Test, name ].compact + @scopes.keys
     end
 
     def valid?(object, prefix)
