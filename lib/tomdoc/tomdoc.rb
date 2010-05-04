@@ -35,10 +35,6 @@ module TomDoc
     end
 
     def validate
-      if raw == "#:nodoc:"
-        raise InvalidTomDoc.new("nodoc")
-      end
-
       if !raw.include?('Returns')
         raise InvalidTomDoc.new("No `Returns' statement.")
       end

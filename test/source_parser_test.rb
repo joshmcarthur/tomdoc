@@ -23,7 +23,7 @@ class ChimneySourceParserTest < TomDoc::Test
 
   test "finds namespaces" do
     assert @result[:GitHub][:Math]
-    assert_equal 3, @result.keys.size
+    assert_equal 2, @result.keys.size
     assert_equal 3, @result[:GitHub].keys.size
   end
 
@@ -33,7 +33,7 @@ class ChimneySourceParserTest < TomDoc::Test
 
   test "finds multiple classes in one file" do
     assert_equal 1, @result[:GitHub][:Math].instance_methods.size
-    assert_equal 2, @result[:GitHub][:Jobs].instance_methods.size
+    assert_equal 1, @result[:GitHub][:Jobs].instance_methods.size
   end
 end
 

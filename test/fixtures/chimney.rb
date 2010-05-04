@@ -707,15 +707,5 @@ module GitHub
     # Returns nothing.
     def perform
     end
-
-    def hook #:nodoc:
-    end
   end
 end
-
-class NilClass #:nodoc:
-  def blank?
-    true
-  end
-end
-
