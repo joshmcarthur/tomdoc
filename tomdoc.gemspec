@@ -15,8 +15,13 @@ Gem::Specification.new do |s|
   s.files            += Dir.glob("bin/**/*")
   s.files            += Dir.glob("man/**/*")
   s.files            += Dir.glob("test/**/*")
-
   s.executables       = %w( tomdoc )
+
+  s.add_dependency "sexp_processor", "= 3.0.4"
+  s.add_dependency      "ParseTree", "= 3.0.5"
+  s.add_dependency     "RubyInline", "= 3.7.0"
+  s.add_dependency    "ruby_parser", "= 2.0.4"
+
   s.description       = <<desc
   TomDoc is flexible code documentation with human readers in
   mind. The tomdoc gem is a Ruby library to discover and display
