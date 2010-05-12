@@ -1,9 +1,9 @@
 TomDoc
 ======
 
-TomDoc is a flexible code documentation specification with human readers in
-mind. Using a few simple rules and zero special syntax you can produce
-great looking documentation for both humans and machines.
+TomDoc is documentation for humans.  Using a few simple rules and zero 
+special syntax you can produce great looking documentation for both humans 
+and machines.
 
 Just follow these four easy steps:
 
