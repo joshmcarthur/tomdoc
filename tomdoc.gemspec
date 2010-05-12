@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.summary           = "A TomDoc library for Ruby."
   s.homepage          = "http://github.com/defunkt/tomdoc"
   s.email             = "chris@ozmm.org"
-  s.authors           = [ "Chris Wanstrath" ]
+  s.authors           = [ "Tom Preston-Werner", "Chris Wanstrath" ]
   s.has_rdoc          = false
 
   s.files             = %w( README.md Rakefile LICENSE )
