@@ -1,8 +1,8 @@
 TomDoc
 ======
 
-TomDoc is documentation for humans.  Using a few simple rules and zero 
-special syntax you can produce great looking documentation for both humans 
+TomDoc is documentation for humans.  Using a few simple rules and zero
+special syntax you can produce great looking documentation for both humans
 and machines.
 
 Just follow these four easy steps:
@@ -99,6 +99,16 @@ or
     open doc.html
 
 ![html](http://img.skitch.com/20100408-dbhtc4mef2q3ygmn63csxgh14w.png)
+
+Local Dev
+---------
+
+Want to hack on tomdoc.rb? Of course you do.
+
+    git clone http://github.com/defunkt/tomdoc.git
+    cd tomdoc
+    bundle install --local
+    ruby -rubygems ./bin/tomdoc lib/tomdoc/source_parser.rb
 
 [man]: https://github.com/defunkt/tomdoc/blob/tomdoc.rb/man/tomdoc.5.ronn
 [spec]: https://github.com/defunkt/tomdoc/blob/tomdoc.rb/tomdoc.md
