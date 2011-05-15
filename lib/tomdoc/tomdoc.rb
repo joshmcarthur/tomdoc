@@ -66,6 +66,8 @@ module TomDoc
       args = []
       last_indent = nil
 
+      return args unless sections[1]
+
       sections[1].split("\n").each do |line|
         next if line.strip.empty?
         indent = line.scan(/^\s*/)[0].to_s.size
