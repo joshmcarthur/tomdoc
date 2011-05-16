@@ -1,4 +1,4 @@
-require 'tomdoc/version'
+require File.dirname(__FILE__) + '/lib/tomdoc/version'
 
 Gem::Specification.new do |s|
   s.name              = "tomdoc"
