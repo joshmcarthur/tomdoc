@@ -86,9 +86,11 @@ module TomDoc
         process(ast[3], new_scope)
       when :imethod
         ast.shift
+        scope ||= (@scopes[:toplevel] ||= Scope.new(:toplevel)) # toplevel ?
         scope.instance_methods << Method.new(*ast)
       when :cmethod
         ast.shift
+        scope ||= (@scopes[:toplevel] ||= Scope.new(:toplevel)) # toplevel ?
         scope.class_methods << Method.new(*ast)
       when Array
         ast.map { |a| process(a, scope) }
