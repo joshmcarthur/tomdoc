@@ -13,13 +13,13 @@ module TomDoc
 
       def write_class_methods(scope, prefix)
         out = '<ul>'
-        out << super.to_s
+        out << super.join
         write out
       end
 
       def write_instance_methods(scope, prefix)
         out = ''
-        out << super.to_s
+        out << super.join
         out << '</ul>'
         write out
       end
