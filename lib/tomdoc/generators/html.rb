@@ -6,6 +6,7 @@ module TomDoc
       end
 
       def write_scope_header(scope, prefix)
+        #write "<h1>#{scope.name}</h1>"
       end
 
       def write_scope_footer(scope, prefix)
