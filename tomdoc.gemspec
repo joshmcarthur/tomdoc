@@ -20,9 +20,6 @@ Gem::Specification.new do |s|
   s.add_dependency   "ruby_parser",    ">= 2.0.4"
   s.add_dependency   "colored"
 
-  #s.add_dependency   "ParseTree",      ">= 3.0.5"
-  #s.add_dependency   "RubyInline",     ">= 3.7.0"
-
   s.description       = <<desc
   TomDoc is flexible code documentation with human readers in
   mind. The tomdoc gem is a Ruby library to discover and display
