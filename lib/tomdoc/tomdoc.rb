@@ -65,11 +65,11 @@ module TomDoc
     end
 
     def tomdoc
-      clean = raw.split("\n").map do |line|
-        line =~ /^(\s*# ?)/ ? line.sub($1, '') : nil
-      end.compact.join("\n")
-
-      clean
+      raw
+      #clean = raw.split("\n").map do |line|
+      #  line =~ /^(\s*# ?)/ ? line.sub($1, '') : nil
+      #end.compact.join("\n")
+      #clean
     end
 
     def sections
