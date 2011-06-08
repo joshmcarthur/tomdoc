@@ -9,6 +9,8 @@ without the rest of tomdoc code base.
 Changes:
 
 * tomdoc/tomdoc.rb reuqires `tomdoc/arg.rb`.
+* fix bug in #tomdoc method clean code.
+* remark out clean code for the time being.
 
 
 == 0.2.1 | 2011-06-08
