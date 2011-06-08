@@ -1,13 +1,31 @@
 module TomDoc
+
+  # TomDoc class needs Arg class.
+  if RUBY_VERSION > '1.9'
+    require_relative 'arg'
+  else
+    require 'tomdoc/arg'
+  end
+
   class InvalidTomDoc < RuntimeError
+    # Create new InvalidTomDoc object.
+    #
+    # doc - document string
+    #
     def initialize(doc)
       @doc = doc
     end
 
+    # Provide access to document string.
+    #
+    # Returns String.
     def message
       @doc
     end
 
+    # Provide access to document string.
+    #
+    # Returns String.
     def to_s
       @doc
     end
