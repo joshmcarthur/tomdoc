@@ -1,5 +1,16 @@
 = Release History
 
+== 0.2.3 | 2011-06-10
+
+This release simply fix a bug that was accidently introduced 
+in the last release, where by the comment markers are not
+stripped from the comment text.
+
+Changes:
+
+* Fix TomDoc#tomdoc needs to strip comments markers.
+
+
 == 0.2.2 | 2011-06-09
 
 Have `tomdoc/tomdoc.rb` require `tomdoc`arg.rb` which it needs.
