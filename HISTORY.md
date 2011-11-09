@@ -1,5 +1,14 @@
 = Release History
 
+== 0.2.4 | 2011-06-10
+
+Cache sections in TomDoc parser, to imporve performance.
+
+Changes:
+
+* Cache output of sections to save splitting every time.
+
+
 == 0.2.3 | 2011-06-10
 
 This release simply fix a bug that was accidently introduced 
