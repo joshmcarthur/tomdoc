@@ -33,18 +33,18 @@ end
 task :default => :test
 
 if command? :turn
-  desc "Run tests"
-  task :test do
+  desc "Run tests with turn"
+  task :turn do
     suffix = "-n #{ENV['TEST']}" if ENV['TEST']
     sh "turn -Ilib:. test/*.rb #{suffix}"
   end
-else
-  Rake::TestTask.new do |t|
-    t.libs << 'lib'
-    t.libs << '.'
-    t.pattern = 'test/**/*_test.rb'
-    t.verbose = false
-  end
+end
+
+Rake::TestTask.new do |t|
+  t.libs << 'lib'
+  t.libs << '.'
+  t.pattern = 'test/**/*_test.rb'
+  t.verbose = false
 end
 
 

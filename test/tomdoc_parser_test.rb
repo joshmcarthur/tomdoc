@@ -46,6 +46,19 @@ comment2
     #   multiplex('Bo', 2)
     #   # => 'BoBo'
 comment3
+
+    @comment4 = TomDoc::TomDoc.new(<<comment4)
+    # Duplicate some text an abitrary number of times.
+    #
+    # Yields the Integer index of the iteration.
+    #
+    # Signature
+    #
+    #   find_by_<field>[_and_<field>...](args)
+    #
+    # field - A field name.
+comment4
+
   end
 
   test "knows when TomDoc is invalid" do
@@ -92,7 +105,7 @@ comment3
   end
 
   test "knows each example" do
-    assert_equal "  multiplex('Bo', 2)\n  # => 'BoBo'",
+    assert_equal "multiplex('Bo', 2)\n  # => 'BoBo'",
       @comment.examples[1].to_s
   end
 
@@ -123,5 +136,22 @@ comment3
 
   test "knows what to do when there are no return examples" do
     assert_equal 0, @comment2.examples.size
+  end
+
+  test "knows what the method yields" do
+    assert_equal "Yields the Integer index of the iteration.", @comment4.yields
+  end
+
+  test "knows if the method has alternate signatures" do
+    assert_equal 1, @comment4.signatures.size
+    assert_equal "find_by_<field>[_and_<field>...](args)", @comment4.signatures.first
+  end
+
+  test "knows the fields associated with signatures" do
+    assert_equal 1, @comment4.signature_fields.size
+
+    arg = @comment4.signature_fields.first
+    assert_equal :field, arg.name
+    assert_equal "A field name.", arg.description
   end
 end
