@@ -31,6 +31,10 @@ module TomDoc
     end
   end
 
+  #
+  # TODO: Instead of having TomDoc::TomDoc, lets consider renaming this
+  #       class TomDoc::Comment or something.
+  #
   class TomDoc
     attr_accessor :raw
 
@@ -49,7 +53,7 @@ module TomDoc
       @signatures       = []
       @signature_fields = []
 
-      parse
+      parse unless @raw.empty?
     end
 
     def to_s
@@ -102,21 +106,27 @@ module TomDoc
     #
     # Returns Array of comment sections.
     def sections
-      @sections ||= tomdoc.split("\n\n")
+      parsed {
+        @sections
+      }
     end
 
     # Description of method or class/module.
     #
     # Returns description String.
     def description
-      @description
+      parsed {
+        @description
+      }
     end
 
     # Description of method or class/module.
     #
     # Returns description String.
     def arguments
-      @arguments
+      parsed {
+        @arguments
+      }
     end
     alias args arguments
 
@@ -124,72 +134,99 @@ module TomDoc
     #
     # Returns String of examples.
     def examples
-      @examples
+      parsed {
+        @examples
+      }
     end
 
     # Description of a methods yield procedure.
     #
     # Returns String decription of yield procedure.
     def yields
-      @yields
+      parsed {
+        @yields
+      }
     end
 
     # The list of retrun values a method can return.
     #
     # Returns Array of method return descriptions.
     def returns
-      @returns
+      parsed {
+        @returns
+      }
     end
 
     # A list of errors a method might raise.
     #
     # Returns Array of method raises descriptions.
     def raises
-      @raises
+      parsed {
+        @raises
+      }
     end
 
     # A list of alternate method signatures.
     #
     # Returns Array of signatures.
     def signatures
-      @signatures
+      parsed {
+        @signatures 
+      }
     end
 
     # A list of signature fields.
     #
     # Returns Array of field definitions.
     def signature_fields
-      @signature_fields
+      parsed {
+        @signature_fields
+      }
     end
 
     # Check if method is public.
     #
     # Returns true if method is public.
     def public?
-      @status == 'Public'
+      parsed {
+        @status == 'Public'
+      }
     end
 
     # Check if method is internal.
     #
     # Returns true if method is internal.
     def internal?
-      @status == 'Internal'
+      parsed {
+        @status == 'Internal'
+      }
     end
 
     # Check if method is deprecated.
     #
     # Returns true if method is deprecated.
     def deprecated?
-      @status == 'Deprecated'
+      parsed {
+        @status == 'Deprecated'
+      }
     end
 
   private
+
+    # Has the comment been parsed yet?
+    def parsed(&block)
+      parse unless @parsed
+      block.call
+    end
 
     # Internal: Parse the Tomdoc formatted comment.
     #
     # Returns true if there was a comment to parse.
     def parse
-      sections = self.sections
+      @parsed = true
+
+      @sections = tomdoc.split("\n\n")
+      sections  = @sections.dup
 
       return false if sections.empty?
 
@@ -214,7 +251,7 @@ module TomDoc
         current = sections.shift
       end
 
-      true
+      return @parsed
     end
 
     # Parse description.
