@@ -43,7 +43,7 @@ module TomDoc
     # text - The raw text of a method or class/module comment.
     #
     # Returns new TomDoc instance.
-    def initialize(text)
+    def initialize(text, options={})
       @raw = text.to_s.strip
 
       @arguments        = []
@@ -96,10 +96,32 @@ module TomDoc
     #
     # Returns cleaned-up comment String.
     def tomdoc
-      clean = raw.split("\n").map do |line|
-        line =~ /^(\s*# ?)/ ? line.sub($1, '') : nil
-      end.compact.join("\n")
-      clean
+      lines = raw.split("\n")
+
+      # remove remark symbol
+      if lines.all?{ |line| /^\s*#/ =~ line }   
+        lines = lines.map do |line|
+          line =~ /^(\s*#)/ ? line.sub($1, '') : nil
+        end
+      end
+
+      # remove indention
+      spaces = lines.map do |line|
+        next if line.strip.empty?
+        md = /^(\s*)/.match(line)
+        md ? md[1].size : nil
+      end.compact
+
+      space = spaces.min
+      lines = lines.map do |line|
+        if line.strip.empty?
+          line
+        else
+          line[space..-1]
+        end
+      end
+
+      lines.compact.join("\n")
     end
 
     # List of comment sections. These are divided simply on "\n\n".
