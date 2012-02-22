@@ -1,12 +1,16 @@
 = Release History
 
-== 0.2.4 | 2011-06-10
+== 0.2.4 | 2012-02-22
 
-Cache sections in TomDoc parser, to imporve performance.
+This release rewrites the TomDoc comment parser to add latest
+features of TomDoc standard.
 
 Changes:
 
-* Cache output of sections to save splitting every time.
+* Add support for Signature.
+* Add support for Raises.
+* Unify comment parsing into single pass.
+* Input text can be with or without comment marker.
 
 
 == 0.2.3 | 2011-06-10

@@ -1,3 +1,5 @@
+require File.dirname(__FILE__) + '/lib/tomdoc/version'
+
 require 'rake/testtask'
 
 def command?(command)
@@ -62,20 +64,25 @@ end
 # Gems
 #
 
-begin
-  require 'tomdoc/version'
-  require 'mg'
-  MG.new("tomdoc.gemspec")
-
-  desc "Push a new version to Gemcutter and publish docs."
-  task :publish => "gem:publish" do
-    require File.dirname(__FILE__) + '/lib/tomdoc/version'
-
-    sh "git tag v#{TomDoc::VERSION}"
-    sh "git push origin master --tags"
-    sh "git clean -fd"
-  end
-rescue LoadError
-  warn "mg not available."
-  warn "Install it with: gem i mg"
+desc "Build gem."
+task :gem do
+  sh "gem build tomdoc.gemspec"
 end
+
+task :push => [:build] do
+  file = Dir['*-#{TomDoc::VERSION}.gem']
+  sh "gem push #{file}"
+end
+
+desc "tag version"
+task :tag do
+  sh "git tag v#{TomDoc::VERSION}"
+  sh "git push origin master --tags"
+  sh "git clean -fd"
+end
+
+desc "tag version and push gem to server"
+task :release => [:push, :tag] do 
+  puts "And away she goes!"
+end
+
