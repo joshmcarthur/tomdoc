@@ -59,6 +59,18 @@ comment3
     # field - A field name.
 comment4
 
+    @comment5 = TomDoc::TomDoc.new(<<comment5)
+    Duplicate some text an abitrary number of times.
+    
+    Yields the Integer index of the iteration.
+    
+    Signature
+    
+      find_by_<field>[_and_<field>...](args)
+    
+    field - A field name.
+comment5
+
   end
 
   test "knows when TomDoc is invalid" do
@@ -153,5 +165,10 @@ comment4
     arg = @comment4.signature_fields.first
     assert_equal :field, arg.name
     assert_equal "A field name.", arg.description
+  end
+
+  test "can hande comments without comment marker" do
+    assert_equal "Duplicate some text an abitrary number of times.",
+      @comment5.description
   end
 end

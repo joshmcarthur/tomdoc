@@ -105,6 +105,10 @@ module TomDoc
         end
       end
 
+      # for some reason the first line is coming in without indention
+      # regardless.
+      first = lines.shift
+
       # remove indention
       spaces = lines.map do |line|
         next if line.strip.empty?
@@ -114,12 +118,15 @@ module TomDoc
 
       space = spaces.min
       lines = lines.map do |line|
-        if line.strip.empty?
-          line
+        if line.empty?
+          line.strip
         else
           line[space..-1]
         end
       end
+
+      # put first line back
+      lines.unshift(first.sub(/^\s*/,''))
 
       lines.compact.join("\n")
     end
