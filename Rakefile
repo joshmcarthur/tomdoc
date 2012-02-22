@@ -69,8 +69,8 @@ task :gem do
   sh "gem build tomdoc.gemspec"
 end
 
-task :push => [:build] do
-  file = Dir['*-#{TomDoc::VERSION}.gem']
+task :push => [:gem] do
+  file = Dir["*-#{TomDoc::VERSION}.gem"].first
   sh "gem push #{file}"
 end
 
