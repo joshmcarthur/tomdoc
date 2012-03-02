@@ -106,7 +106,7 @@ module TomDoc
       end
 
       # for some reason the first line is coming in without indention
-      # regardless.
+      # regardless, so we temporary remove it
       first = lines.shift
 
       # remove indention
@@ -116,7 +116,7 @@ module TomDoc
         md ? md[1].size : nil
       end.compact
 
-      space = spaces.min
+      space = spaces.min || 0
       lines = lines.map do |line|
         if line.empty?
           line.strip
