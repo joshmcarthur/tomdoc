@@ -86,3 +86,7 @@ task :release => [:push, :tag] do
   puts "And away she goes!"
 end
 
+desc "Do nothing."
+task :noop do
+  puts "Done nothing."
+end
