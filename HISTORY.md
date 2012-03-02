@@ -1,5 +1,15 @@
 = Release History
 
+== 0.2.5 | 2012-03-02
+
+This release simply fixes an issue with parsing documentation
+that has only a single line.
+
+Changes:
+
+* Fix indentation stripping.
+
+
 == 0.2.4 | 2012-02-22
 
 This release rewrites the TomDoc comment parser to add latest
