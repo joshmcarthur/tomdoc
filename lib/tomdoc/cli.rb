@@ -126,7 +126,13 @@ class OptionParser
     buffer = ''
 
     ARGV.select { |arg| File.exists?(arg) }.each do |file|
-      buffer << File.read(file)
+      if File.directory?(file)
+        Dir.glob(File.join(File.expand_path(file), "**", "*.rb")).each do |rb_file|
+          buffer << File.read(rb_file)
+        end
+      else
+        buffer << File.read(file)
+      end
     end
 
     require 'stringio'
