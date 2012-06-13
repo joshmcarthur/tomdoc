@@ -31,7 +31,11 @@ module TomDoc
         sexp = text_or_sexp
       end
 
+      write_page_header
       process(sexp)
+      write_page_footer
+
+      @buffer
     end
 
     def process(scopes = {}, prefix = nil)
@@ -52,6 +56,14 @@ module TomDoc
       write_class_methods(scope, prefix)
       write_instance_methods(scope, prefix)
       write_scope_footer(scope, prefix)
+    end
+
+    def write_page_header
+
+    end
+
+    def write_page_footer
+
     end
 
     def write_scope_header(scope, prefix)
