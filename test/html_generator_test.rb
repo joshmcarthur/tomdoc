@@ -6,13 +6,19 @@ class HTMLGeneratorTest < TomDoc::Test
   end
 
   test "works" do
-    assert_equal <<html, @html
-<ul>
-<li><b>Simple#string(text)</b><pre>Just a simple method.
+    assert_block do
+      text = <<html
+<li>          <b id="Simple#string">
+            Simple#string(text)
+          </b>
+<pre>Just a simple method.
 
 text - The String to return.
 
 Returns a String.</pre></li></ul>
 html
+
+      @html.include?(text)
+    end
   end
 end
