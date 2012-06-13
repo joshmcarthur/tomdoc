@@ -45,7 +45,7 @@ Installation
     easy_install Pygments
     gem install tomdoc
 
-tomdoc.rb has been tested with Ruby 1.8.7.
+tomdoc.rb has been tested with Ruby 1.8.7, 1.9.2 and 1.9.3.
 
 
 Usage
@@ -53,6 +53,9 @@ Usage
 
     $ tomdoc file.rb
     # Prints colored documentation of file.rb.
+
+    $ tomdoc folder
+    # Prints colored documentation of all *.rb files inside folder
 
     $ tomdoc file.rb -n STRING
     # Prints methods or classes in file.rb matching STRING.
@@ -63,8 +66,12 @@ Usage
     $ tomdoc -f html file.rb
     # Prints HTML documentation of file.rb.
 
+    $ tomdoc -f html folder
+    # Prints HTML documentation of all *.rb files inside folder
+
     $ tomdoc -i file.rb
     # Ignore TomDoc validation, print any methods we find.
+
 
     $ tomdoc -h
     # Displays more options.
